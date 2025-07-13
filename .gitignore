@@ -1,0 +1,32 @@
+# === BACKEND (Spring Boot) ===
+/backend/target/
+backend/.idea/
+backend/*.iml
+backend/.mvn/
+!backend/mvnw
+!backend/mvnw.cmd
+backend/*.log
+
+# === FRONTEND (React or HTML) ===
+/frontend/node_modules/
+frontend/.env
+frontend/.env.* 
+frontend/dist/
+frontend/build/
+frontend/.vscode/
+
+# === AI (Python, Jupyter) ===
+/ai/__pycache__/
+ai/.venv/
+ai/env/
+ai/venv/
+**/.ipynb_checkpoints/
+
+# === Global Ignore ===
+*.log
+*.swp
+*~
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
