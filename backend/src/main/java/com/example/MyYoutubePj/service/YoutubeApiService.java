@@ -2,10 +2,12 @@ package com.example.MyYoutubePj.service;
 
 import com.example.MyYoutubePj.dto.request.ChannelRequest;
 import com.example.MyYoutubePj.dto.request.VideoCreationRequest;
+import com.example.MyYoutubePj.dto.response.VideoIdPageResponse;
 import com.example.MyYoutubePj.dto.response.YoutubeSearchResponse;
 
 import com.example.MyYoutubePj.dto.response.YoutubeVideoDetailsResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class YoutubeApiService {
 
     private final RestTemplate restTemplate = new RestTemplate(); //RestTemplate để call API ngoài
@@ -24,29 +27,34 @@ public class YoutubeApiService {
     private String apiKey;
 
     // 1. Lấy 50 videoId trending theo category
-    public List<String> getVideoIdsByTopic(String topicId, int maxResults) {
+    public VideoIdPageResponse getVideoIdsByKeyword(int maxResults, String keyword, String nextPageToken) {
         String searchUrl = "https://www.googleapis.com/youtube/v3/search"
                 + "?key=" + apiKey
                 + "&type=video"
                 + "&maxResults=" + maxResults
                 + "&part=id"
                 + "&order=viewCount"
-                + "&videoCategoryId=" + topicId
-                + "&fields=items/id/videoId";
+                + "&fields=items/id/videoId,nextPageToken"
+                + "&q=" + keyword;
 
-        ResponseEntity<YoutubeSearchResponse> response =
-                restTemplate.getForEntity(searchUrl, YoutubeSearchResponse.class);
+        if (nextPageToken != null && !nextPageToken.isBlank()) {
+            searchUrl += "&pageToken=" + nextPageToken;
+        }
+
+        ResponseEntity<YoutubeSearchResponse> response = restTemplate.getForEntity(searchUrl, YoutubeSearchResponse.class);
+        YoutubeSearchResponse body = response.getBody();
 
         List<String> videoIds = new ArrayList<>();
-        if (response.getBody() != null && response.getBody().getItems() != null) {
-            for (YoutubeSearchResponse.Item item : response.getBody().getItems()) {
-                videoIds.add(item.getId());
+        if (body != null && body.getItems() != null) {
+            for (YoutubeSearchResponse.Item item : body.getItems()) {
+                videoIds.add(item.getId().getVideoId());
             }
         }
-        return videoIds;
+        return new VideoIdPageResponse(videoIds, body != null ? body.getNextPageToken() : null);
     }
 
-    // 2. Lấy chi tiết cho tối đa 50 videoId
+
+    // 2. Từ số lượng maxResult videoID lấy được từ API trên, tạo VideoCreationRequest từ truy vấn metadata cụ thể
     public List<VideoCreationRequest> getVideosDetails(List<String> videoIds) {
         if (videoIds.isEmpty()) return Collections.emptyList();
 
@@ -56,7 +64,7 @@ public class YoutubeApiService {
                 + "&key=" + apiKey
                 + "&part=snippet,statistics,contentDetails"
                 + "&fields=items(id,snippet(title,description,thumbnails,channelId,channelTitle,publishedAt,tags),statistics(viewCount,likeCount,commentCount),contentDetails(duration))";
-
+        // Gọi API bằng restTemplate, map Json kết quả từ API sang YoutubeVideoDetailsResponse (DTO)
         ResponseEntity<YoutubeVideoDetailsResponse> response =
                 restTemplate.getForEntity(url, YoutubeVideoDetailsResponse.class);
 
@@ -75,40 +83,36 @@ public class YoutubeApiService {
         var snippet = item.getSnippet();
         var stats = item.getStatistics();
         var content = item.getContentDetails();
-
-        System.out.println("Parsing video: ");
-        System.out.println("- videoId: " + item.getId());
-        System.out.println("- title: " + snippet.getTitle());
-        System.out.println("- description: " + snippet.getDescription());
-        System.out.println("- thumbnail: " + extractThumbnail(snippet.getThumbnails()));
-        System.out.println("- views: " + stats.getViewCount());
-        System.out.println("- likes: " + stats.getLikeCount());
-        System.out.println("- comments: " + stats.getCommentCount());
-        System.out.println("- duration: " + content.getDuration());
-        System.out.println("- tags: " + snippet.getTags());
-        System.out.println("- publishedAt: " + snippet.getPublishedAt());
-        System.out.println("- channelId: " + snippet.getChannelId());
-        System.out.println("- channelTitle: " + snippet.getChannelTitle());
-
+        //Debug thông tin video xuất ra
+        log.info("Parsing video - ID: {}, Title: {}", item.getId(), (snippet != null ? snippet.getTitle() : "N/A"));
+        String title = (snippet != null ? snippet.getTitle() : "");
+        if (title.isBlank()) {
+            log.warn("Video ID {} has empty title.", item.getId());
+        }
+        if (snippet != null) {
+            Timestamp publishedAt = parseTimestamp(snippet.getPublishedAt());
+            if (publishedAt == null) {
+                log.warn("Video ID {} has invalid publishedAt: {}", item.getId(), snippet.getPublishedAt());
+            }
+        }
         return VideoCreationRequest.builder()
                 .videoId(item.getId())
-                .title(snippet.getTitle())
-                .description(snippet.getDescription())
-                .thumbnail(extractThumbnail(snippet.getThumbnails()))
-                .views(parseLong(stats.getViewCount()))
-                .likes(parseLong(stats.getLikeCount()))
-                .comments(parseLong(stats.getCommentCount()))
-                .duration(content.getDuration())
-                .tags(snippet.getTags() != null ? snippet.getTags() : new ArrayList<>())
-                .publishedAt(parseTimestamp(snippet.getPublishedAt()))
-                .channel(ChannelRequest.builder()
+                .title(snippet != null ? snippet.getTitle() : "")
+                .description(snippet != null ? snippet.getDescription() : "")
+                .thumbnail(snippet != null ? extractThumbnail(snippet.getThumbnails()) : "")
+                .views(stats != null ? parseLong(stats.getViewCount()) : 0L)
+                .likes(stats != null ? parseLong(stats.getLikeCount()) : 0L)
+                .comments(stats != null ? parseLong(stats.getCommentCount()) : 0L)
+                .duration(content != null ? content.getDuration() : "")
+                .tags(snippet != null && snippet.getTags() != null ? snippet.getTags() : new ArrayList<>())
+                .publishedAt(snippet != null ? parseTimestamp(snippet.getPublishedAt()) : null)
+                .channel(snippet != null ? ChannelRequest.builder()
                         .channelId(snippet.getChannelId())
                         .channelName(snippet.getChannelTitle())
-                        .build())
+                        .build() : null)
                 .build();
     }
-
-
+    // Các hàm hỗ trợ
     private String extractThumbnail(YoutubeVideoDetailsResponse.Thumbnails thumbnails) {
         if (thumbnails.getMaxres() != null && thumbnails.getMaxres().getUrl() != null) {
             return thumbnails.getMaxres().getUrl();
@@ -130,8 +134,16 @@ public class YoutubeApiService {
 
     private Long parseLong(Object val) {
         try {
-            return Long.parseLong((String) val);
+            if (val instanceof Number) {
+                return ((Number) val).longValue();
+            } else if (val instanceof String) {
+                return Long.parseLong((String) val);
+            } else {
+                log.warn("Unsupported type for parsing to Long: {}", val);
+                return 0L;
+            }
         } catch (Exception e) {
+            log.warn("Cannot parse value to Long: {}", val, e);
             return 0L;
         }
     }

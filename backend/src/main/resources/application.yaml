@@ -2,7 +2,6 @@ server:
   port: 8080
   servlet:
     context-path: /identity
-
 spring:
   datasource:
     url: "jdbc:mysql://localhost:3306/my_youtube_app"
@@ -14,8 +13,12 @@ spring:
     show-sql: true
 youtube:
   api:
-    key: "AIzaSyDSqOHp2sYXjLsWPpc9R7_a-3aJbPSFi8E"
+    key: "AIzaSyDaI8iwmkFNyhCAudzOM4uHZbCqDUhJrQo"
 logging:
   level:
     root: INFO
     com.example.MyYoutubePj: DEBUG
+    org.hibernate: OFF
+keywords:
+  file:
+    path: classpath:keywords.json

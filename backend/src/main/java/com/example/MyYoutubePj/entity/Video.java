@@ -19,9 +19,8 @@ import java.util.List;
 public class Video {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(length = 50)
-    String id;
-
+    String Id;
+    @Column(name = "videoUrl", unique = true, nullable = false)
     String videoUrl; // URL embedded của video
 
     String title;
@@ -39,6 +38,8 @@ public class Video {
     Timestamp publishedAt;
 
     @ElementCollection
+    @CollectionTable(name = "video_tags", joinColumns = @JoinColumn(name = "video_id"))
+    @Column(name = "tags", columnDefinition = "TEXT")
     List<String> tags;
 
     @ManyToOne(fetch = FetchType.LAZY)
