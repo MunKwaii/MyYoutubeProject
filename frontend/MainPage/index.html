@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Header start -->
+    <header class="header">
+      <!-- Menu + Logo -->
+      <div class="header_left">
+        <span class="material-symbols-outlined button_circle">menu</span>
+        <div class="logo_wrapper">
+          <a href="https://www.youtube.com">
+            <img src="youtubeLogo-Photoroom.png" alt="Youtube Logo" />
+          </a>
+          <div class="tool_tip">Youtube Home</div>
+        </div>
+      </div>
+      <!-- Thanh tìm kiếm -->
+      <div class="header_search">
+        <form class="search_form" action="">
+          <input type="text" , placeholder="Search" />
+          <span class="material-symbols-outlined keyboard-icon">keyboard</span>
+          <div class="button_wrapper">
+            <button type="submit">
+              <span class="material-symbols-outlined">search</span>
+            </button>
+            <div class="tool_tip">Search</div>
+          </div>
+        </form>
+        <button class="voice_button button_circle">
+          <span class="material-symbols-outlined">mic</span>
+          <div class="tool_tip">Voice</div>
+        </button>
+      </div>
+      <!-- Nhóm Icons -->
+      <div class="header_icons">
+        <!-- Nút tạo video -->
+        <button class="create_button">
+          <span class="material-symbols-outlined">add</span>
+          <span>Create</span>
+        </button>
+        <!-- Nút thông báo -->
+        <div class="notification button_circle">
+          <span class="material-symbols-outlined"> notifications </span>
+          <div class="tool_tip">Nofitication</div>
+        </div>
+        <!-- Nút avatar -->
+        <div class="avatar button_circle">
+          <span class="material-symbols-outlined"> account_circle </span>
+          <div class="tool_tip">Account</div>
+        </div>
+      </div>
+    </header>
+    <!-- Header end -->
+
+    <!-- Body start -->
+    <main class="body">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar_components">
+          <span class="material-symbols-outlined"> home </span>
+          <span>Home</span>
+        </div>
+        <div class="sidebar_components">
+          <img
+            width="24"
+            height="24"
+            src="https://img.icons8.com/material-outlined/48/youtube-shorts.png"
+            alt="youtube-shorts"
+          />
+          <span>Shorts</span>
+        </div>
+        <div class="sidebar_components">
+          <span class="material-symbols-outlined"> subscriptions </span>
+          <span>Subcriptions</span>
+        </div>
+        <div class="sidebar_components">
+          <span class="material-symbols-outlined"> account_circle </span>
+          <span>You</span>
+        </div>
+      </aside>
+
+      <!-- Sidebar Expanded -->
+      <aside class="sidebar_expanded">
+        <!-- Header -->
+        <div class="side_ex_top">
+          <span class="material-symbols-outlined button_circle">menu</span>
+          <a href="https://www.youtube.com">
+            <img
+              src="youtubeLogo-Photoroom.png"
+              alt="Youtube Logo"
+              height="64px"
+            />
+          </a>
+        </div>
+        <!-- Section 1 -->
+        <div class="side_ex_sections">
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined"> home </span>
+            <span>Home</span>
+          </div>
+          <div class="side_ex_components">
+            <img
+              width="24"
+              height="24"
+              src="https://img.icons8.com/material-outlined/48/youtube-shorts.png"
+              alt="youtube-shorts"
+            />
+            <span>Shorts</span>
+          </div>
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined"> subscriptions </span>
+            <span>Subcriptions</span>
+          </div>
+        </div>
+        <hr />
+        <!-- Section 2 -->
+        <div class="side_ex_sections">
+          <div class="You_heading">You ></div>
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined"> history </span>
+            <span>History</span>
+          </div>
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined"> playlist_play </span>
+            <span>Playlists</span>
+          </div>
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined"> schedule </span>
+            <span>Watch later</span>
+          </div>
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined"> thumb_up </span>
+            <span>Liked videos</span>
+          </div>
+        </div>
+        <hr />
+        <!-- Section 3 -->
+        <div class="side_ex_sections">
+          <div class="Normal_heading">Subscription</div>
+          <div class="subscription_list" id="subscription_list">
+            <!-- Mẫu 1 kênh (sẽ lặp lại nhiều lần bằng JS/backend) -->
+            <div class="side_ex_components">
+              <img
+                class="Avatar"
+                src="https://yt3.googleusercontent.com/ytc/AIdro_mT_RAcAKTEXdvZycCVE5eVMUMAdeOjoOpKsYrNWK_aEw=s160-c-k-c0x00ffffff-no-rj"
+                alt="Avatar"
+              />
+              <span>CodingNepal</span>
+            </div>
+            <!-- ... -->
+          </div>
+          <!-- Chuan bi de call backend cho avatar va ten channel-->
+          <div class="side_ex_components" id="show_more_btn">
+            <span class="material-symbols-outlined"> keyboard_arrow_down </span>
+            <span>Show more</span>
+          </div>
+        </div>
+        <!-- Section 4 -->
+        <div class="side_ex_sections">
+          <div class="Normal_heading">Explore</div>
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined">
+              local_fire_department
+            </span>
+            <span>Trending</span>
+          </div>
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined"> music_cast </span>
+            <span>Music</span>
+          </div>
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined"> sports_esports </span>
+            <span>Games</span>
+          </div>
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined"> breaking_news </span>
+            <span>News</span>
+          </div>
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined"> sports_and_outdoors </span>
+            <span>Sports</span>
+          </div>
+        </div>
+        <hr />
+        <!-- Section 5 -->
+        <div class="side_ex_sections">
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined"> settings </span>
+            <span>Settings</span>
+          </div>
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined"> flag </span>
+            <span>Reports</span>
+          </div>
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined"> help </span>
+            <span>Help</span>
+          </div>
+        </div>
+        <br />
+        <br />
+      </aside>
+      <!-- Overlay background -->
+      <div id="overlay" class="overlay"></div>
+
+      <!-- Video Area -->
+      <div class="video_container">
+        <!-- Category list -->
+        <div class="category_wrapper">
+          <div class="category_list">
+            <button class="category_button">All</button>
+            <button class="category_button">JavaScript</button>
+            <button class="category_button">Computer programming</button>
+            <button class="category_button">Podcasts</button>
+            <button class="category_button">Live</button>
+            <button class="category_button">Media theories</button>
+            <button class="category_button">Study Skills</button>
+            <button class="category_button">Thoughts</button>
+            <button class="category_button">Vocabulary</button>
+            <button class="category_button">Equations</button>
+            <button class="category_button">Recently uploaded</button>
+            <button class="category_button">Watched</button>
+            <button class="category_button">New to you</button>
+          </div>
+        </div>
+        <!-- Video list -->
+        <div class="video_scrollable">
+          <div class="video_list">
+            <a href="#" class="video_card">
+              <div class="thumbnail_container">
+                <img
+                  src="https://i.ytimg.com/vi/pOAwQ0FkVz8/maxresdefault.jpg"
+                  class="thumbnail"
+                  alt="Thumbnail"
+                  loading="lazy"
+                />
+                <span class="duration">10:03</span>
+              </div>
+              <div class="video_info">
+                <img
+                  src="https://yt3.googleusercontent.com/ytc/AIdro_mT_RAcAKTEXdvZycCVE5eVMUMAdeOjoOpKsYrNWK_aEw=s160-c-k-c0x00ffffff-no-rj"
+                  alt="Channel Logo"
+                  class="icon"
+                />
+                <div class="video_details">
+                  <h2 class="title">
+                    Top 10 Easy To Create JavaScript Games For Beginners
+                  </h2>
+                  <p class="channel_name">CodingNepal</p>
+                  <p class="views">27K Views • 4 months ago</p>
+                </div>
+              </div>
+            </a>
+
+            <a href="#" class="video_card">
+              <div class="thumbnail_container">
+                <img
+                  src="https://i.ytimg.com/vi/pOAwQ0FkVz8/maxresdefault.jpg"
+                  class="thumbnail"
+                  alt="Thumbnail"
+                  loading="lazy"
+                />
+                <span class="duration">10:03</span>
+              </div>
+              <div class="video_info">
+                <img
+                  src="https://yt3.googleusercontent.com/ytc/AIdro_mT_RAcAKTEXdvZycCVE5eVMUMAdeOjoOpKsYrNWK_aEw=s160-c-k-c0x00ffffff-no-rj"
+                  alt="Channel Logo"
+                  class="icon"
+                />
+                <div class="video_details">
+                  <h2 class="title">
+                    Top 10 Easy To Create JavaScript Games For Beginners
+                  </h2>
+                  <p class="channel_name">CodingNepal</p>
+                  <p class="views">27K Views • 4 months ago</p>
+                </div>
+              </div>
+            </a>
+
+            <a href="#" class="video_card">
+              <div class="thumbnail_container">
+                <img
+                  src="https://i.ytimg.com/vi/pOAwQ0FkVz8/maxresdefault.jpg"
+                  class="thumbnail"
+                  alt="Thumbnail"
+                  loading="lazy"
+                />
+                <span class="duration">10:03</span>
+              </div>
+              <div class="video_info">
+                <img
+                  src="https://yt3.googleusercontent.com/ytc/AIdro_mT_RAcAKTEXdvZycCVE5eVMUMAdeOjoOpKsYrNWK_aEw=s160-c-k-c0x00ffffff-no-rj"
+                  alt="Channel Logo"
+                  class="icon"
+                />
+                <div class="video_details">
+                  <h2 class="title">
+                    Top 10 Easy To Create JavaScript Games For Beginners
+                  </h2>
+                  <p class="channel_name">CodingNepal</p>
+                  <p class="views">27K Views • 4 months ago</p>
+                </div>
+              </div>
+            </a>
+
+            <a href="#" class="video_card">
+              <div class="thumbnail_container">
+                <img
+                  src="https://i.ytimg.com/vi/pOAwQ0FkVz8/maxresdefault.jpg"
+                  class="thumbnail"
+                  alt="Thumbnail"
+                  loading="lazy"
+                />
+                <span class="duration">10:03</span>
+              </div>
+              <div class="video_info">
+                <img
+                  src="https://yt3.googleusercontent.com/ytc/AIdro_mT_RAcAKTEXdvZycCVE5eVMUMAdeOjoOpKsYrNWK_aEw=s160-c-k-c0x00ffffff-no-rj"
+                  alt="Channel Logo"
+                  class="icon"
+                />
+                <div class="video_details">
+                  <h2 class="title">
+                    Top 10 Easy To Create JavaScript Games For Beginners
+                  </h2>
+                  <p class="channel_name">CodingNepal</p>
+                  <p class="views">27K Views • 4 months ago</p>
+                </div>
+              </div>
+            </a>
+
+            <a href="#" class="video_card">
+              <div class="thumbnail_container">
+                <img
+                  src="https://i.ytimg.com/vi/pOAwQ0FkVz8/maxresdefault.jpg"
+                  class="thumbnail"
+                  alt="Thumbnail"
+                  loading="lazy"
+                />
+                <span class="duration">10:03</span>
+              </div>
+              <div class="video_info">
+                <img
+                  src="https://yt3.googleusercontent.com/ytc/AIdro_mT_RAcAKTEXdvZycCVE5eVMUMAdeOjoOpKsYrNWK_aEw=s160-c-k-c0x00ffffff-no-rj"
+                  alt="Channel Logo"
+                  class="icon"
+                />
+                <div class="video_details">
+                  <h2 class="title">
+                    Top 10 Easy To Create JavaScript Games For Beginners
+                  </h2>
+                  <p class="channel_name">CodingNepal</p>
+                  <p class="views">27K Views • 4 months ago</p>
+                </div>
+              </div>
+            </a>
+
+            <a href="#" class="video_card">
+              <div class="thumbnail_container">
+                <img
+                  src="https://i.ytimg.com/vi/pOAwQ0FkVz8/maxresdefault.jpg"
+                  class="thumbnail"
+                  alt="Thumbnail"
+                  loading="lazy"
+                />
+                <span class="duration">10:03</span>
+              </div>
+              <div class="video_info">
+                <img
+                  src="https://yt3.googleusercontent.com/ytc/AIdro_mT_RAcAKTEXdvZycCVE5eVMUMAdeOjoOpKsYrNWK_aEw=s160-c-k-c0x00ffffff-no-rj"
+                  alt="Channel Logo"
+                  class="icon"
+                />
+                <div class="video_details">
+                  <h2 class="title">
+                    Top 10 Easy To Create JavaScript Games For Beginners
+                  </h2>
+                  <p class="channel_name">CodingNepal</p>
+                  <p class="views">27K Views • 4 months ago</p>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="reload-container">
+            <button id="reloadSeedBtn">Reload Seed</button>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- Body end -->
+    <script src="script.js"></script>
+  </body>
+</html>
