@@ -1,11 +1,9 @@
 package com.example.MyYoutubePj.scheduler;
 
+import com.example.MyYoutubePj.dto.request.ChannelRequest;
 import com.example.MyYoutubePj.dto.request.VideoCreationRequest;
-import com.example.MyYoutubePj.dto.response.VideoIdPageResponse;
-import com.example.MyYoutubePj.entity.Category;
-import com.example.MyYoutubePj.entity.Keyword;
-import com.example.MyYoutubePj.entity.Quota;
-import com.example.MyYoutubePj.entity.Video;
+import com.example.MyYoutubePj.dto.response.YoutubeVideoIdPageResponse;
+import com.example.MyYoutubePj.entity.*;
 import com.example.MyYoutubePj.service.*;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -14,12 +12,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -89,64 +86,40 @@ public class YoutubeMetadataScheduler {
                 }
         );
     }
-//    private String getNextCategoryId(String currentId) {
-//        int index = CATEGORY_IDS.indexOf(currentId);
-//        return CATEGORY_IDS.get((index + 1) % CATEGORY_IDS.size());
-//    }
-//    private void processCategory(Category category) {
-//        VideoIdPageResponse videoIdPage = youtubeApiService.getVideoIdsByTopic(
-//                MAX_RESULTS, keyword, category.getNextPageToken());
-//        quotaCount += 100;
-//        List<String> newVideoIds = videoIdPage.getVideoIds().stream()
-//                .filter(id -> !videoService.existsByVideoId(id))
-//                .collect(Collectors.toList());
-//        List<VideoCreationRequest> videos = youtubeApiService.getVideosDetails(newVideoIds);
-//        quotaCount += 150;
-//        // Cập nhật quota count trong DB
-//        quotaService.updateQuota(quotaCount);
-//        AtomicLong savedCount = new AtomicLong(0);
-//        videos.forEach(video -> {
-//                    Video savedVideo = videoService.createVideoFromYouTubeApi(video);
-//                    if (savedVideo != null) {
-//                        log.info("Saved video: {} - {}", savedVideo.getVideoUrl(), savedVideo.getTitle());
-//                        savedCount.getAndIncrement();
-//                    } else {
-//                        log.info("Video already exists, skipping: {}", video.getVideoId());
-//                    }
-//                });
-//        long videoCount = category.getVideoCount() + savedCount.get();
-//        categoryService.updateCategory(category, videoIdPage.getNextPageToken(), videoCount);
-//    }
-//    private void processCategory(){
-//        for (String categoryId : CATEGORY_IDS) {
-//            VideoIdPageResponse videoIdPage = youtubeApiService.getVideoIdsByTopic(categoryId, MAX_RESULTS, keyword, null);
-//            quotaCount += 100;
-//            List<String> newVideoIds = videoIdPage.getVideoIds().stream()
-//                    .filter(id -> !videoService.existsByVideoId(id))
-//                    .collect(Collectors.toList());
-//            List<VideoCreationRequest> videos = youtubeApiService.getVideosDetails(newVideoIds);
-//            quotaCount += 150;
-//            quotaService.updateQuota(quotaCount);
-//            AtomicLong savedCount = new AtomicLong(0);
-//            videos.forEach(video -> {
-//                Video savedVideo = videoService.createVideoFromYouTubeApi(video);
-//                if (savedVideo != null) {
-//                    log.info("Saved video: {} - {}", savedVideo.getVideoUrl(), savedVideo.getTitle());
-//                    savedCount.getAndIncrement();
-//                } else {
-//                    log.info("Video already exists, skipping: {}", video.getVideoId());
-//                }
-//            });
-//            log.info("Category {} - Saved {} new videos", categoryId, savedCount.get());
-//        }
-//    }
+    public void syncOneMissingChannel() {
+        if (quotaCount >= DAILY_QUOTA_LIMIT) {
+            log.warn("Quota hết: {}/{}. Dừng scheduler.", quotaCount, DAILY_QUOTA_LIMIT);
+            stopScheduler();
+            return;
+        }
+        Optional<Channel> missingChannel = videoService.findOneChannelWithMissingInfo();
 
+        if (missingChannel.isEmpty()) {
+            log.info("✅ Không còn channel nào thiếu thông tin.");
+            return;
+        }
+        Channel channel = missingChannel.get();
+        String channelId = channel.getChannelId();
+
+        try {
+            ChannelRequest request = youtubeApiService.getChannelInfo(channelId);
+
+            if (request != null) {
+                videoService.updateChannelInfoFromYouTubeApi(request);
+                log.info("✅ Đã cập nhật channelId: {}", channelId);
+            } else {
+                log.warn("⚠️ Không lấy được thông tin từ API cho channelId: {}", channelId);
+            }
+        } catch (Exception e) {
+            log.error("❌ Lỗi khi cập nhật channelId {}: {}", channelId, e.getMessage());
+        }
+    }
     private void processKeyword(Keyword keyword) {
         String nextPageToken = keyword.getNextPageToken();
         long totalSaved = keyword.getVideoCount();
         String keywordText = keyword.getKeyword();
         do{
-            VideoIdPageResponse videoIdPage = youtubeApiService.getVideoIdsByKeyword(MAX_RESULTS, keywordText, nextPageToken);
+            YoutubeVideoIdPageResponse videoIdPage = youtubeApiService.getVideoIdsByKeyword(MAX_RESULTS, keywordText, nextPageToken);
             quotaCount += 100;
             quotaService.updateQuota(quotaCount);
             List<String> newVideoIds = videoIdPage.getVideoIds().stream()

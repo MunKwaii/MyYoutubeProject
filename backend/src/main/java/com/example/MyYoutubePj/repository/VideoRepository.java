@@ -15,4 +15,7 @@ public interface VideoRepository extends JpaRepository<Video,String> {
     List<Video> findRandomVideos(@Param("limit") int limit);
     @Query(value = "SELECT id FROM videos", nativeQuery = true)
     List<String> findAllVideoIds();
+    @Query(value = "SELECT v.id FROM videos v WHERE LOWER(v.title) LIKE LOWER(CONCAT('%', :keyword, '%'))", nativeQuery = true)
+    List<String> findVideoIdsByKeyword(@Param("keyword") String keyword);
+
 }

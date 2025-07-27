@@ -387,11 +387,15 @@ body {
 }
 .video_list .video_card .duration {
   position: absolute;
-  right: 0.65rem;
-  bottom: 0.8rem;
+  right: 0.5rem;
+  bottom: 0.5rem;
   color: white;
-  background-color: black;
-  border-radius: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.85); /* nhẹ nhàng và chuyên nghiệp hơn */
+  border-radius: 0.375rem; /* 6px, vừa phải */
+  padding: 2px 6px; /* dọc 2px, ngang 6px là tối ưu cho 3–5 ký tự */
+  font-size: 0.85rem; /* 12px – đủ rõ, không thô */
+  font-weight: 500;
+  line-height: 1;
 }
 .video_list .video_card .thumbnail {
   width: 100%;
@@ -436,4 +440,12 @@ body {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
+  display: none;
+}
+.no_results {
+  font-size: 20px;
+  color: rgb(29, 28, 28);
+  text-align: center;
+  margin-top: 30px;
+  display: none;
 }

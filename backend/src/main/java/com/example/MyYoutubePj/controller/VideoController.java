@@ -66,6 +66,20 @@ public class VideoController {
     ) {
         return videoService.getVideosBySeed(seed, page, pageSize);
     }
+    /**
+     * Lấy danh sách video từ keyword search
+     * Endpoint: GET /api/videos/search
+     */
+    @GetMapping("/search")
+    public List<VideoMainPageResponse> searchVideos(
+            @RequestParam String keyword,
+            @RequestParam String seed,
+            @RequestParam int page,
+            @RequestParam int pageSize
+    ) {
+        return videoService.searchVideos(keyword, seed, page, pageSize);
+    }
+
 
 
 //    //creat new video

@@ -21,9 +21,9 @@ public class MyYoutubePjApplication {
 
 	public static void main(String[] args) {
 		// Nhập keyword trước khi start Spring
-		Scanner scanner = new Scanner(System.in);
-		System.out.print("Nhập từ khóa tìm kiếm keyword: ");
-		initialKeyword = scanner.nextLine().trim();
+//		Scanner scanner = new Scanner(System.in);
+//		System.out.print("Nhập từ khóa tìm kiếm keyword: ");
+//		initialKeyword = scanner.nextLine().trim();
 
 		// Khởi động Spring
 		ConfigurableApplicationContext context = SpringApplication.run(MyYoutubePjApplication.class, args);
@@ -32,7 +32,7 @@ public class MyYoutubePjApplication {
 		YoutubeMetadataScheduler scheduler = context.getBean(YoutubeMetadataScheduler.class);
 		scheduler.setKeyword(initialKeyword);
 		scheduler.startScheduler();
-
-		log.info("Đã nhận từ khóa: {}", initialKeyword);
+//
+//		log.info("Đã nhận từ khóa: {}", initialKeyword);
 	}
 }

@@ -83,9 +83,17 @@ document.addEventListener("DOMContentLoaded", () => {
 // Load video
 let currentSeed = "";
 let currentPage = 0;
-const pageSize = 100;
+const pageSize = 99;
 let totalVideos = 0;
+let currentKeyword = "";
 const BASE_URL = "http://localhost:8080/identity";
+
+// DOM toàn cục
+const videoList = document.querySelector(".video_list");
+const noResults = document.querySelector(".no_results");
+const searchInput = document.querySelector("#search_input");
+const searchForm = document.querySelector(".search_form");
+const reloadPageBtn = document.getElementById("reloadSeedBtn");
 
 async function fetchSeed() {
   const response = await fetch(`${BASE_URL}/api/videos/random-seed`);
@@ -97,16 +105,40 @@ async function fetchSeed() {
 }
 
 async function fetchVideos() {
-  const response = await fetch(
-    `${BASE_URL}/api/videos/by-seed?seed=${currentSeed}&page=${currentPage}&pageSize=${pageSize}`
-  );
-  const videos = await response.json();
-  renderVideos(videos);
-  currentPage++;
+  let url;
+  if (currentKeyword) {
+    url = `${BASE_URL}/api/videos/search?keyword=${encodeURIComponent(
+      currentKeyword
+    )}&seed=${currentSeed}&page=${currentPage}&pageSize=${pageSize}`;
+  } else {
+    url = `${BASE_URL}/api/videos/by-seed?seed=${currentSeed}&page=${currentPage}&pageSize=${pageSize}`;
+  }
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Fetch failed");
+
+    const videos = await response.json();
+
+    if (currentKeyword && currentPage === 0 && videos.length === 0) {
+      noResults.style.display = "block";
+    } else {
+      noResults.style.display = "none";
+      renderVideos(videos);
+      currentPage++;
+    }
+    if (
+      (!currentKeyword && currentPage * pageSize >= totalVideos) || // by-seed hết
+      (currentKeyword && videos.length === 0) // search hết
+    ) {
+      reloadPageBtn.style.display = "inline-block";
+    }
+  } catch (error) {
+    console.error("Error fetching video:", error);
+    noResults.style.display = "block";
+  }
 }
 
 function renderVideos(videos) {
-  const videoList = document.querySelector(".video_list");
   videos.forEach((video) => {
     const videoCard = document.createElement("a");
     videoCard.className = "video_card";
@@ -130,19 +162,44 @@ function renderVideos(videos) {
 }
 
 async function initPage() {
-  const videoList = document.querySelector(".video_list");
+  noResults.style.display = "none";
   videoList.innerHTML = ""; // Clear video cũ
+  currentKeyword = "";
+  reloadPageBtn.style.display = "none";
   await fetchSeed();
   await fetchVideos();
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 window.addEventListener("scroll", async () => {
   if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
-    if (currentPage * pageSize < totalVideos) {
+    if (!currentKeyword && currentPage * pageSize < totalVideos) {
       await fetchVideos();
-    } else {
-      console.log("Reached end of videos for this seed");
+    } else if (currentKeyword) {
+      await fetchVideos();
     }
+  }
+});
+
+// Bắt sự kiện Search form
+searchForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const keyword = searchInput.value.trim();
+  if (!keyword) return;
+
+  currentKeyword = keyword;
+  currentSeed = ""; // reset random
+  currentPage = 0;
+  videoList.innerHTML = "";
+  noResults.style.display = "none";
+  await fetchVideos();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+// Reset khi clear input (search với input rỗng)
+searchInput.addEventListener("input", async (e) => {
+  if (e.target.value.trim() === "" && currentKeyword !== "") {
+    await initPage();
   }
 });
 

@@ -2,7 +2,8 @@ package com.example.MyYoutubePj.service;
 
 import com.example.MyYoutubePj.dto.request.ChannelRequest;
 import com.example.MyYoutubePj.dto.request.VideoCreationRequest;
-import com.example.MyYoutubePj.dto.response.VideoIdPageResponse;
+import com.example.MyYoutubePj.dto.response.ChannelResponse;
+import com.example.MyYoutubePj.dto.response.YoutubeVideoIdPageResponse;
 import com.example.MyYoutubePj.dto.response.YoutubeSearchResponse;
 
 import com.example.MyYoutubePj.dto.response.YoutubeVideoDetailsResponse;
@@ -27,7 +28,7 @@ public class YoutubeApiService {
     private String apiKey;
 
     // 1. Lấy 50 videoId trending theo category
-    public VideoIdPageResponse getVideoIdsByKeyword(int maxResults, String keyword, String nextPageToken) {
+    public YoutubeVideoIdPageResponse getVideoIdsByKeyword(int maxResults, String keyword, String nextPageToken) {
         String searchUrl = "https://www.googleapis.com/youtube/v3/search"
                 + "?key=" + apiKey
                 + "&type=video"
@@ -50,9 +51,8 @@ public class YoutubeApiService {
                 videoIds.add(item.getId().getVideoId());
             }
         }
-        return new VideoIdPageResponse(videoIds, body != null ? body.getNextPageToken() : null);
+        return new YoutubeVideoIdPageResponse(videoIds, body != null ? body.getNextPageToken() : null);
     }
-
 
     // 2. Từ số lượng maxResult videoID lấy được từ API trên, tạo VideoCreationRequest từ truy vấn metadata cụ thể
     public List<VideoCreationRequest> getVideosDetails(List<String> videoIds) {
@@ -77,6 +77,33 @@ public class YoutubeApiService {
         return requests;
     }
 
+    // 3. Lấy các trường còn thiếu trong channel entity
+    public ChannelRequest getChannelInfo(String channelId){
+        if (channelId.isEmpty()) return null;
+        String url = "https://www.googleapis.com/youtube/v3/channels"
+                + "?id=" + channelId
+                + "&key=" + apiKey
+                + "&part=snippet,statistics"
+                + "&field=items(snippet/thumbnails,statistics/subscriberCount)";
+        ResponseEntity<ChannelResponse> response = restTemplate.getForEntity(url, ChannelResponse.class);
+        if (response.getBody() != null && response.getBody().getItems() != null && !response.getBody().getItems().isEmpty()) { // Tránh .get(0) khi items rỗng để tránh lỗi runtime
+            ChannelResponse.Item item = response.getBody().getItems().get(0);
+            String imageUrl = extractThumbnail(item.getSnippet().getThumbnails());
+            Long subscribers = parseLong(item.getStatistics().getSubscriberCount());
+            return ChannelRequest.builder()
+                    .channelId(channelId)
+                    .channelName(item.getSnippet().getTitle())
+                    .channelImage(imageUrl)
+                    .channelSubscribers(subscribers)
+                    .build();
+        }
+        return ChannelRequest.builder()
+                .channelId(channelId)
+                .channelName("")
+                .channelImage("missing")
+                .channelSubscribers(-1L)
+                .build();
+    }
 
     // Parse dữ liệu từ 1 item thành VideoCreationRequest
     private VideoCreationRequest parseVideo(YoutubeVideoDetailsResponse.Item item) {
@@ -127,7 +154,16 @@ public class YoutubeApiService {
         }
         return "";
     }
-
+    private String extractThumbnail(ChannelResponse.Thumbnails thumbnails) {
+        if (thumbnails.getHigh() != null && thumbnails.getHigh().getUrl() != null) {
+            return thumbnails.getHigh().getUrl();
+        } else if (thumbnails.getMedium() != null && thumbnails.getMedium().getUrl() != null) {
+            return thumbnails.getMedium().getUrl();
+        } else if (thumbnails.getDefaultThumbnail() != null && thumbnails.getDefaultThumbnail().getUrl() != null) {
+            return thumbnails.getDefaultThumbnail().getUrl();
+        }
+        return "";
+    }
     private Timestamp parseTimestamp(String iso) {
         return Timestamp.valueOf(iso.replace("T", " ").replace("Z", ""));
     }

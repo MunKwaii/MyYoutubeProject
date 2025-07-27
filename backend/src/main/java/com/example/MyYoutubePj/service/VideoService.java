@@ -11,6 +11,8 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -27,6 +29,7 @@ public class VideoService {
     final ChannelRepository channelRepository;
     private static final int SEED_VIDEO_COUNT = 1000;
     private final Map<String, List<String>> seedToVideoIdsCache = new ConcurrentHashMap<>();
+    private final Map<String, List<String>> seedSearchCache = new ConcurrentHashMap<>();
 
     @Autowired
     public VideoService(VideoRepository videoRepository, ChannelRepository channelRepository) {
@@ -61,15 +64,21 @@ public class VideoService {
 
         return videoRepository.save(video);
     }
+
     // Cập nhật Channel Image và Channel Subscribers count cho table Channel
-    public Channel updateChannelInfoFromYouTubeApi(String channelId, ChannelRequest request) {
-        return channelRepository.findById(channelId)
+    public Channel updateChannelInfoFromYouTubeApi(ChannelRequest request) {
+        return channelRepository.findById(request.getChannelId())
                 .map(channel -> {
                     channel.setChannelImage(request.getChannelImage());
                     channel.setChannelSubscribers(request.getChannelSubscribers());
                     return channelRepository.save(channel);
                 })
                 .orElseThrow(() -> new RuntimeException("Channel not found"));
+    }
+    // Tìm record còn thiếu trường trong table Channel
+    public Optional<Channel> findOneChannelWithMissingInfo() {
+        Page<Channel> page = channelRepository.findOneMissingChannelInfo(PageRequest.of(0, 1));
+        return page.isEmpty() ? Optional.empty() : Optional.of(page.getContent().get(0));
     }
     // Truy xuất tất cả video
     public List<Video> getAllVideo() {
@@ -97,7 +106,7 @@ public class VideoService {
             Collections.shuffle(allVideoIds, random);
 
             // Cắt 1000 video đầu tiên sau khi shuffle
-            return allVideoIds.stream().limit(1000).toList();
+            return allVideoIds.stream().limit(990).toList();
         });
 
         int fromIndex = page * pageSize;
@@ -108,6 +117,31 @@ public class VideoService {
         List<Video> videos = videoRepository.findAllById(pagedIds);
 
         // Map id về Video giữ đúng thứ tự
+        Map<String, Video> idToVideoMap = videos.stream()
+                .collect(Collectors.toMap(Video::getId, v -> v));
+
+        return pagedIds.stream()
+                .map(id -> toMainPageResponse(idToVideoMap.get(id)))
+                .toList();
+    }
+
+    public List<VideoMainPageResponse> searchVideos(String keyword, String seed, int page, int pageSize) {
+        // Cache theo seed + keyword để đảm bảo kết quả tìm kiếm giữ thứ tự và tái sử dụng được
+        String cacheKey = seed + "::" + keyword.toLowerCase();
+        List<String> videoIds = seedSearchCache.computeIfAbsent(cacheKey, k -> {
+            List<String> allMatchingIds = videoRepository.findVideoIdsByKeyword(keyword); // Custom query
+            Random random = new Random(seed.hashCode());
+            Collections.shuffle(allMatchingIds, random);
+            return allMatchingIds.stream().limit(990).toList();
+        });
+
+        int fromIndex = page * pageSize;
+        int toIndex = Math.min(fromIndex + pageSize, videoIds.size());
+        if (fromIndex >= videoIds.size()) return List.of();
+
+        List<String> pagedIds = videoIds.subList(fromIndex, toIndex);
+        List<Video> videos = videoRepository.findAllById(pagedIds);
+
         Map<String, Video> idToVideoMap = videos.stream()
                 .collect(Collectors.toMap(Video::getId, v -> v));
 
