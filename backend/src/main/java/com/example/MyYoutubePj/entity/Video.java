@@ -1,5 +1,6 @@
 package com.example.MyYoutubePj.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -16,13 +17,13 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 
+
 public class Video {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String Id;
     @Column(name = "videoUrl", unique = true, nullable = false)
     String videoUrl; // URL embedded của video
-
     String title;
 
     @Column(columnDefinition = "TEXT")

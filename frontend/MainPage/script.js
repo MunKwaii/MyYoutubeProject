@@ -110,7 +110,8 @@ function renderVideos(videos) {
   videos.forEach((video) => {
     const videoCard = document.createElement("a");
     videoCard.className = "video_card";
-    videoCard.href = video.videoUrl;
+    videoCard.href = `../PlayVideoPage/play-video.html?id=${video.id}`;
+
     videoCard.innerHTML = `
       <div class="thumbnail_container">
         <img src="${video.thumbnailUrl}" class="thumbnail" loading="lazy" />
