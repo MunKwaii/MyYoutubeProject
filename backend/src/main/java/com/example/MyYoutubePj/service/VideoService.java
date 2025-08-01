@@ -3,6 +3,7 @@ package com.example.MyYoutubePj.service;
 import com.example.MyYoutubePj.dto.request.ChannelRequest;
 import com.example.MyYoutubePj.dto.request.VideoCreationRequest;
 import com.example.MyYoutubePj.dto.response.VideoMainPageResponse;
+import com.example.MyYoutubePj.dto.response.VideoPlayPageResponse;
 import com.example.MyYoutubePj.entity.Channel;
 import com.example.MyYoutubePj.entity.Video;
 import com.example.MyYoutubePj.repository.ChannelRepository;
@@ -156,6 +157,7 @@ public class VideoService {
 
     private VideoMainPageResponse toMainPageResponse(Video video) {
         return VideoMainPageResponse.builder()
+                .videoId(video.getId())
                 .videoUrl(video.getVideoUrl())
                 .thumbnailUrl(video.getThumbnail())
                 .durationFormatted(formatDuration(video.getDuration()))
@@ -166,6 +168,30 @@ public class VideoService {
                 .publishedAtFormatted(formatPublishedAt(video.getPublishedAt()))
                 .build();
     }
+    public Optional<VideoPlayPageResponse> getVideoDetailById(String id) {
+        return videoRepository.findById(id).map(video -> {
+            Channel channel = video.getChannel();
+            return VideoPlayPageResponse.builder()
+                    .videoId(video.getId())
+                    .videoUrl(video.getVideoUrl())
+                    .title(video.getTitle())
+                    .description(video.getDescription())
+                    .thumbnail(video.getThumbnail())
+                    .views(video.getViews())
+                    .likes(video.getLikes())
+                    .comments(video.getComments())
+                    .durationFormatted(formatDuration(video.getDuration()))
+                    .publishedAtFormatted(formatPublishedAt(video.getPublishedAt()))
+                    .tags(video.getTags())
+
+                    .channelId(channel.getChannelId())
+                    .channelName(channel.getChannelName())
+                    .channelImage(channel.getChannelImage())
+                    .channelSubscribers(channel.getChannelSubscribers())
+                    .build();
+        });
+    }
+
 
     private String formatDuration(String isoDuration) {
         // Convert ISO 8601 PT2H30M10S -> HH:mm:ss

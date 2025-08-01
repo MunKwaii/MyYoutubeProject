@@ -1,263 +1,493 @@
 /* Reset mặc định trình duyệt: bỏ margin, padding; dùng font Poppins; box-sizing tính cả padding + border */
-*{
-    margin: 0;
-    padding: 0;
-    font-family: 'poppins', sans-serif;
-    box-sizing: border-box;
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-
+html,
+body {
+  overflow: hidden;
+  height: 100%;
+}
 /* Bỏ gạch chân của thẻ a, đặt màu xám dễ đọc */
-a{
-    text-decoration: none;
-    color: #5a5a5a;
+a {
+  text-decoration: none;
+  color: #5a5a5a;
 }
 
 /* Khi rê chuột vào ảnh thì hiện hình bàn tay để biết có thể click */
-img{
-    cursor: pointer;
+img {
+  cursor: pointer;
 }
 
 /* Tạo layout hàng ngang bằng flexbox, các item canh giữa theo chiều dọc */
-.flex-div{
-    display: flex;
-    align-items: center;
+.flex-div {
+  display: flex;
+  align-items: center;
+}
+/* ==================== Header ==================== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  border-bottom: 1px solid hsla(0, 0%, 100%, 0.55);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: rgb(243, 249, 255);
+}
+/* Header Left */
+.header_left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 3px;
+}
+.logo_wrapper {
+  position: relative;
+}
+.header_left img {
+  height: 66px;
+}
+.tool_tip {
+  position: absolute;
+  top: 100%;
+  margin-top: -24px;
+  margin-left: 74px;
+  padding: 6px 10px;
+  background: black;
+  color: white;
+  border-radius: 4px;
+  font-size: 14px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+.logo_wrapper:hover .tool_tip {
+  opacity: 1;
 }
 
-/* Nav bar (thanh trên cùng) có:
-   - padding trên dưới 10px, trái phải 2%
-   - các phần con cách xa đều nhau
-   - đổ bóng nhẹ bên dưới
-   - nền trắng
-   - position: static là mặc định (nếu không muốn dính top)
-   - top: 0 và z-index: 10 không có tác dụng nếu chưa dùng fixed/sticky */
-nav{
-    padding: 10px 2%;
-    justify-content: space-between;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2) ;
-    background: #fff;
-    position: sticky;
-    top: 0;
-    z-index: 10;
+/*  Search bar */
+.header_search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+  flex: 1;
+  max-width: 700px;
+  margin-left: auto;
+}
+.search_form {
+  display: flex;
+  align-items: center;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid hsl(0, 0%, 80%);
+  border-radius: 40px;
+  flex: 1;
+  max-width: 70%;
+}
+.search_form:has(input:focus) {
+  border: 2px solid rgba(120, 170, 244, 0.9);
+}
+.search_form input {
+  border: none;
+  padding: 10px 16px;
+  flex: 1;
+  font-size: 16px;
+  min-width: auto;
+  border-radius: 40px;
+  outline: none;
+}
+.search_form .material-symbols-outlined {
+  padding: 10px 22px;
+  color: hsl(0, 0%, 8%);
+  font-size: 22px;
+}
+.search_form button {
+  cursor: pointer;
+  border: none;
+  border-top-right-radius: 40px;
+  border-bottom-right-radius: 40px;
+  transition: background-color 0.2 ease;
+}
+.button_wrapper {
+  position: relative;
+}
+.button_wrapper .tool_tip {
+  position: absolute;
+  top: 150%;
+  left: -60%;
+  padding: 6px 10px;
+  background: black;
+  color: white;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+.button_wrapper:hover .tool_tip {
+  opacity: 1;
+}
+.button_wrapper:hover button {
+  background-color: rgba(0, 0, 0, 0.25);
+}
+.button_circle {
+  position: relative;
+  border: none;
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2 ease, opacity 0.2s;
+}
+.button_circle .tool_tip {
+  position: absolute;
+  top: 150%;
+  left: -120%;
+  padding: 6px 10px;
+  background: black;
+  color: white;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+.button_circle:hover .tool_tip {
+  opacity: 1;
+}
+.button_circle:hover {
+  background-color: rgba(0, 0, 0, 0.25);
 }
 
-/* Icon trong phần nav-right có width 25px, cách nhau 25px */
-.nav-right img{
-    width: 25px;
-    margin-right: 25px;
+/* Header Icons */
+.header_icons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
 }
-
-/* Ảnh avatar người dùng ở góc phải thanh điều hướng (nav)
-   - Rộng 35px
-   - Bo tròn 100% thành hình tròn
-   - Không có khoảng cách bên phải (margin-right: 0) */
-.nav-right .user-icon{
-    width: 35px;
-    border-radius: 50%;
-    margin-right: 0;
+.create_button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background-color: rgb(242, 242, 242);
+  border: none;
+  border-radius: 40px;
+  font-size: 14px;
+  transition: background-color 0.2 ease;
 }
-
-/* Icon menu bên trái (3 gạch ngang) có chiều rộng 22px, cách logo 25px */
-.nav-left .menu-icon{
-    width: 22px;
-    margin-right: 25px;
+.create_button:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.25);
 }
-
-/* Logo YouTube bên trái có chiều rộng 130px */
-.nav-left .logo{
-    width: 130px;
+.avatar .material-symbols-outlined {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
 }
-
-/* Icon micro nằm ở bên phải thanh tìm kiếm, nhỏ 16px */
-.nav-middle .mic-icon{
-    width: 16px;
+.notification .material-symbols-outlined {
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
-/* Hộp tìm kiếm (search box) có:
-   - viền xám nhạt
-   - bo góc tròn 25px
-   - padding bên trong cho đẹp
-   - margin phải 15px để cách icon micro */
-.nav-middle .search-box{
-    border: 1px solid #ccc;
-    margin-right: 15px;
-    padding: 8px 12px;
-    border-radius: 25px;
-}
-
-/* Ô input trong search box:
-   - rộng 400px
-   - bỏ viền (border: 0) và hiệu ứng khi nhấn (outline: 0)
-   - nền trong suốt */
-.nav-middle .search-box input{
-    width: 400px;
-    border: 0;
-    outline: 0;
-    background: transparent;
-}
-
-/* Icon kính lúp bên trong search box có kích thước 15px */
-.nav-middle .search-box img{
-    width: 15px;
-}
-
 /* ==================== Side Bar ==================== */
 
 /* Sidebar cố định bên trái, chiếm 15% chiều rộng, cao 100% màn hình (viewport height).
    Có nền trắng, padding phía trên 80px để tránh đè lên thanh nav. */
-   .sidebar{
-    background: #fff;
-    width: 15%;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    padding-left: 2%;
-    padding-top: 80px;
+.sidebar {
+  background: #fff;
+  width: 15%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  padding-left: 2%;
+  padding-top: 80px;
 }
 
 /* Icon trong shortcut link có kích thước 20px, cách chữ bên phải 20px */
-.shortcut-links a img{
-    width: 20px;
-    margin-right: 20px;
+.shortcut-links a img {
+  width: 20px;
+  margin-right: 20px;
 }
 
 /* Mỗi mục link trong sidebar được hiển thị ngang (flex), canh giữa, wrap nếu nội dung dài
    - margin-bottom 20px để cách đều giữa các mục
    - width: fit-content để vừa đúng nội dung */
-.shortcut-links a{
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-    width: fit-content;
-    flex-wrap: wrap;
+.shortcut-links a {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  width: fit-content;
+  flex-wrap: wrap;
 }
 
 /* Mục đầu tiên trong danh sách link (Home) được tô màu đỏ để nổi bật */
-.shortcut-links a:first-child{
-    color: #ed3833;
+.shortcut-links a:first-child {
+  color: #ed3833;
 }
 
 /* Đường kẻ ngăn giữa các phần trong sidebar */
-.sidebar hr{
-    border: 0;
-    height: 1px;
-    background: #ccc;
-    width: 85%;
+.sidebar hr {
+  border: 0;
+  height: 1px;
+  background: #ccc;
+  width: 85%;
 }
 
 /* Tiêu đề "Subscribed" bên dưới sidebar */
-.subscribed-list h3{
-    font-size: 13px;
-    margin: 20px 0;
-    color: #5a5a5a;
+.subscribed-list h3 {
+  font-size: 13px;
+  margin: 20px 0;
+  color: #5a5a5a;
 }
 
 /* Các mục người đã đăng ký cũng là flex như shortcut-link */
-.subscribed-list a{
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-    width: fit-content;
-    flex-wrap: wrap;
+.subscribed-list a {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  width: fit-content;
+  flex-wrap: wrap;
 }
 
 /* Ảnh avatar kênh đăng ký: bo tròn 50%, rộng 25px, cách chữ 20px */
-.subscribed-list a img{
-    width: 25px;
-    border-radius: 50%;
-    margin-right: 20px;
+.subscribed-list a img {
+  width: 25px;
+  border-radius: 50%;
+  margin-right: 20px;
 }
 
 /* ============ Khi sidebar bị thu nhỏ (có class .small-sidebar) ============ */
 
 /* Sidebar thu hẹp chỉ còn 5% chiều rộng */
-.small-sidebar{
-    width: 5%;
+.small-sidebar {
+  width: 5%;
 }
 
 /* Ẩn chữ trong các mục link khi sidebar thu nhỏ */
-.small-sidebar a p{
-    display: none;
+.small-sidebar a p {
+  display: none;
 }
 
 /* Ẩn tiêu đề "Subscribed" khi sidebar thu nhỏ */
-.small-sidebar h3{
-    display: none;
+.small-sidebar h3 {
+  display: none;
 }
 
 /* Ẩn đường kẻ (hr) khi sidebar thu nhỏ */
-.small-sidebar hr{
-    display: none;
-}
-/* ==================== main ==================== */
-
-/* Phần chứa toàn bộ nội dung chính của trang
-   - Nền xám nhạt (#f9f9f9)
-   - Padding trái 17% để không đè lên sidebar
-   - Padding phải 2%, trên và dưới 20px */
-   .container{
-    background: #f9f9f9;
-    padding-left: 17%;
-    padding-right: 2%;
-    padding-top: 20px;
-    padding-bottom: 20px;
+.small-sidebar hr {
+  display: none;
 }
 
-/* Khi sidebar thu nhỏ, container sẽ được đẩy sát vào hơn (padding-left nhỏ hơn) */
-.large-container{
-    padding-left: 7%;
+/*Body*/
+.body {
+  display: flex;
+  align-items: flex-start;
+}
+.sidebar {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 80px;
+  align-items: center;
+  padding: 8px 0;
+  gap: 20px;
+  position: sticky;
+  top: 86.6667px;
+  background-color: rgb(243, 249, 255);
+}
+.sidebar_components {
+  display: flex;
+  width: 70px;
+  height: 72px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 8px 0;
+  transition: background-color 0.3s ease;
+}
+/*Icon và Img*/
+.sidebar_components span:last-child {
+  font-size: 12px;
+}
+.sidebar_components:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+}
+/*Sidebar expanded*/
+.sidebar_expanded {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 240px;
+  height: 100vh;
+  background-color: white;
+  border-right: 1px solid #ddd;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  z-index: 1001;
+  overflow-y: auto;
+}
+.sidebar_expanded.active {
+  transform: translateX(0);
+}
+/* Tuỳ chọn: làm thanh cuộn trông gọn gàng hơn */
+.sidebar_expanded::-webkit-scrollbar {
+  width: 8px;
+}
+.sidebar_expanded::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+.sidebar_expanded::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+.side_ex_top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border-bottom: 1px solid rgb(221, 221, 221);
+  position: sticky;
+  background-color: #ffffff;
+}
+.side_ex_top .button_circle {
+  margin-left: -48px;
+}
+.side_ex_top img {
+  height: 66px;
+}
+.side_ex_sections {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 12px;
+  gap: 4px;
+}
+.side_ex_components {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2 ease;
+}
+.side_ex_components:hover {
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
-/* Banner phía trên (quảng cáo, nổi bật) chiếm toàn bộ chiều rộng */
-.banner{
-    width: 100%;
+.Normal_heading,
+.You_heading {
+  font-size: 16px;
+  font-weight: 700;
+  color: rgb(17, 17, 17);
+  padding: 2px 14px;
+}
+.You_heading:hover {
+  cursor: pointer;
+}
+.side_ex_components .material-symbols-outlined,
+.side_ex_components img,
+.side_ex_components .Avatar {
+  width: 22px;
 }
 
-/* Ảnh trong banner cũng full chiều ngang và có bo góc nhẹ (8px) */
-.banner img{
-    width: 100%;
-    border-radius: 8px;
+.side_ex_components span:last-child {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgb(15, 15, 15);
+  white-space: nowrap;
+}
+.sidebar_expanded hr {
+  border: none;
+  border-top: 1px solid rgb(221, 221, 221);
+  margin: 8px 0;
+  width: 100%;
+}
+/*Overlay*/
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(219, 217, 217, 0.82);
+  z-index: 1000;
+  display: none;
+}
+.overlay.active {
+  display: block;
 }
 
+/*Video container*/
+.container {
+  background-color: rgb(243, 249, 255);
+  padding: 0;
+}
+.video_container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  /* overflow: hidden; */
+  height: calc(100vh - 86px);
+}
 /* Danh sách video được chia lưới:
    - Tự động căn theo chiều rộng màn hình
    - Mỗi cột tối thiểu 250px, tối đa giãn đều (1fr)
    - Cách cột 16px, cách hàng 30px
    - Có khoảng cách phía trên 15px */
-.list-container{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    grid-column-gap: 16px;
-    grid-row-gap: 30px;
-    margin-top: 15px;
+.list-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-column-gap: 16px;
+  grid-row-gap: 30px;
+  margin-top: 15px;
 }
 
 /* Ảnh thumbnail của video chiếm 100% ô chứa, bo nhẹ 5px */
-.vid-list .thumbnail{
-    width: 100%;
-    border-radius: 5px;
+.vid-list .thumbnail {
+  width: 100%;
+  border-radius: 5px;
 }
 
 /* Flexbox chứa ảnh avatar + thông tin video, canh từ trên xuống
    - Có margin trên 7px để tách khỏi thumbnail */
-.vid-list .flex-div{
-    align-items: flex-start;
-    margin-top: 7px;
+.vid-list .flex-div {
+  align-items: flex-start;
+  margin-top: 7px;
 }
 
 /* Ảnh avatar kênh đăng video:
    - Rộng 35px
    - Cách bên phải 10px
    - Bo tròn hoàn toàn */
-.vid-list .flex-div img{
-    width: 35px;
-    margin-right: 10px;
-    border-radius: 50%;
+.vid-list .flex-div img {
+  width: 35px;
+  margin-right: 10px;
+  border-radius: 50%;
 }
 
 /* Phần chứa thông tin video: tiêu đề, tên kênh, lượt xem... */
-.vid-info{
-    color: #5a5a5a;
-    font-size: 13px;
+.vid-info {
+  color: #5a5a5a;
+  font-size: 13px;
 }
 
 /* Tiêu đề video là thẻ a:
@@ -265,555 +495,520 @@ nav{
    - Đậm hơn (font-weight 600)
    - Hiển thị dạng block (chiếm 1 dòng)
    - Có khoảng cách dưới 5px */
-.vid-info a{
-    color: #000;
-    font-weight: 600;
-    display: block;
-    margin-bottom: 5px;
+.vid-info a {
+  color: #000;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 5px;
 }
-
 /* ============ Responsive: Áp dụng khi chiều rộng màn hình <= 900px ============ */
-@media (max-width: 900px){
+@media (max-width: 900px) {
+  /* Ẩn icon menu (3 gạch) để tiết kiệm không gian */
+  .menu-icon {
+    display: none;
+  }
 
-    /* Ẩn icon menu (3 gạch) để tiết kiệm không gian */
-    .menu-icon{
-        display: none;
-    }
+  /* Ẩn sidebar bên trái khi trên màn hình nhỏ (điện thoại, tablet) */
+  .sidebar {
+    display: none;
+  }
 
-    /* Ẩn sidebar bên trái khi trên màn hình nhỏ (điện thoại, tablet) */
-    .sidebar{
-        display: none;
-    }
+  /* Giảm khoảng cách trái/phải của nội dung chính để vừa màn hình nhỏ */
+  .container,
+  .large-container {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
 
-    /* Giảm khoảng cách trái/phải của nội dung chính để vừa màn hình nhỏ */
-    .container, .large-container{
-        padding-left: 5%;
-        padding-right: 5%;
-    }
+  /* Ẩn tất cả icon bên phải của navbar (upload, more, notification...) */
+  .nav-right img {
+    display: none;
+  }
 
-    /* Ẩn tất cả icon bên phải của navbar (upload, more, notification...) */
-    .nav-right img{
-        display: none;
-    }
+  /* Chỉ hiển thị avatar người dùng (ảnh Jack), thu nhỏ lại còn 30px */
+  .nav-right .user-icon {
+    display: block;
+    width: 30px;
+  }
 
-    /* Chỉ hiển thị avatar người dùng (ảnh Jack), thu nhỏ lại còn 30px */
-    .nav-right .user-icon{
-        display: block;
-        width: 30px;
-    }
+  /* Ô tìm kiếm thu hẹp chiều rộng còn 100px để vừa với màn hình nhỏ */
+  .nav-middle .search-box input {
+    width: 100px;
+  }
 
-    /* Ô tìm kiếm thu hẹp chiều rộng còn 100px để vừa với màn hình nhỏ */
-    .nav-middle .search-box input{
-        width: 100px;
-    }
+  /* Ẩn icon microphone trong thanh tìm kiếm (không cần thiết trên mobile) */
+  .nav-middle .mic-icon {
+    display: none;
+  }
 
-    /* Ẩn icon microphone trong thanh tìm kiếm (không cần thiết trên mobile) */
-    .nav-middle .mic-icon{
-        display: none;
-    }
-
-    /* Thu nhỏ logo cho phù hợp giao diện trên điện thoại */
-    .logo{
-        width: 90px;
-    }
+  /* Thu nhỏ logo cho phù hợp giao diện trên điện thoại */
+  .logo {
+    width: 90px;
+  }
 }
 
 /* ============ play video page ============ */
 /* Container cho trang phát video – thêm padding trái để nội dung không sát mép */
-.play-container{
-    padding-left: 5%;
+.play-container {
+  padding-left: 2%;
+  padding-right: 2%;
+  margin-top: 0;
+  padding-top: 0;
 }
 
 /* Hàng ngang chứa 2 phần: video bên trái và danh sách video gợi ý bên phải */
-.row{
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap; /* Cho phép xuống hàng nếu màn hình nhỏ */
+.row {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap; /* Cho phép xuống hàng nếu màn hình nhỏ */
 }
 
 /* Khối bên trái: phần phát video, chiếm 69% chiều ngang */
-.play-video{
-    flex-basis: 69%;
+.play-video {
+  flex-basis: 69%;
 }
 
 /* Khối bên phải: sidebar gợi ý video, chiếm 30% chiều ngang */
-.right-sidebar{
-    flex-basis: 30%;
+.right-sidebar {
+  flex-basis: 30%;
 }
 
 /* Video chiếm toàn bộ chiều ngang khối phát video */
-.play-video iframe{
-    width: 100%;
-    height: 645px;
-    border-radius: 10px;
-    margin-bottom: 10px;
+.play-video iframe {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 10px;
+  margin-bottom: 10px;
 }
-
-
 
 /* Mỗi video trong danh sách gợi ý bên phải được xếp theo hàng ngang */
-.side-video-list{
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 8px; /* Cách nhau giữa các video gợi ý */
+.side-video-list {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px; /* Cách nhau giữa các video gợi ý */
 }
-.side-video-list img{
-    border-radius: 10px;
+.side-video-list img {
+  border-radius: 10px;
 }
-
 
 /* Ảnh thumbnail trong danh sách gợi ý sẽ co giãn để chiếm toàn bộ phần của nó */
-.side-video-list img{
-    width: 100%;
+.side-video-list img {
+  width: 100%;
 }
 
 /* Phần ảnh nhỏ trong danh sách video chiếm 49% chiều ngang */
-.side-video-list .small-thumbnail{
-    flex-basis: 49%;
+.side-video-list .small-thumbnail {
+  flex-basis: 49%;
 }
 
 /* Phần mô tả (text) cũng chiếm 49% chiều ngang còn lại */
-.side-video-list .vid-info{
-    flex-basis: 49%;
+.side-video-list .vid-info {
+  flex-basis: 49%;
 }
 
 /* Các thẻ tag (#HTML, #CSS...) nằm dưới video – màu xanh, cỡ chữ nhỏ */
-.play-video .tags a{
-    color:#0000ff;
-    font-size: 13px;
+.play-video .tags a {
+  color: #0000ff;
+  font-size: 13px;
 }
 
 /* Tiêu đề video – cỡ lớn hơn bình thường, in đậm */
-.play-video h2{
-    font-weight: 600;
-    font-size: 22px;
+.play-video h2 {
+  font-weight: 600;
+  font-size: 22px;
 }
 
 /* Vùng chứa thông tin video: lượt xem, like, share...
    Dùng flex để chia 2 bên – 1 bên là text, 1 bên là các icon */
-.play-video .play-video-info{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    margin-top: 10px;
-    font-size: 14px;
-    color: #5a5a5a;
+.play-video .play-video-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #5a5a5a;
 }
 
 /* Icon like/share/save – nhỏ 20px, cách chữ 8px */
-.play-video .play-video-info a img{
-    width: 20px;
-    margin-right: 8px;
+.play-video .play-video-info a img {
+  width: 20px;
+  margin-right: 8px;
 }
 
 /* Mỗi nút like/share/save – icon + text nằm cùng hàng, canh giữa, cách nhau 15px */
-.play-video .play-video-info a{
-    display: inline-flex;
-    align-items: center;
-    margin-left: 15px;
+.play-video .play-video-info a {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0;
 }
 
 /* Đường kẻ phân cách giữa phần thông tin và phần tiếp theo – mảnh, xám nhạt */
-.play-video hr{
-    border: 0;
-    height: 1px;
-    background: #ccc;
-    margin: 10px 0;
+.play-video hr {
+  border: 0;
+  height: 1px;
+  background: #ccc;
+  margin: 10px 0;
 }
 
 /* ======= Publisher: Thông tin người đăng video =======*/
 
-
-
-.publisher{
-    display: flex; /* Đặt avatar, text và nút Subscribe nằm cùng hàng */
-    align-items: center; /* Căn giữa theo chiều dọc */
-    margin-top: 20px; /* Cách phía trên một khoảng */
+.publisher {
+  display: flex; /* Đặt avatar, text và nút Subscribe nằm cùng hàng */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  margin-top: 20px; /* Cách phía trên một khoảng */
 }
 
-.publisher div{
-    flex: 1; /* Chiếm phần còn lại (giữa) giữa ảnh và nút */
-    line-height: 18px; /* Giãn dòng vừa phải */
+.publisher div {
+  flex: 1; /* Chiếm phần còn lại (giữa) giữa ảnh và nút */
+  line-height: 18px; /* Giãn dòng vừa phải */
 }
 
-.publisher img{
-    width: 50px; /* Ảnh đại diện */
-    border-radius: 50%; /* Bo tròn hình tròn */
-    margin-right: 15px; /* Cách text bên phải */
+.publisher img {
+  width: 50px; /* Ảnh đại diện */
+  border-radius: 50%; /* Bo tròn hình tròn */
+  margin-right: 15px; /* Cách text bên phải */
 }
 
-.publisher div p{
-    color: #000; /* Tên kênh: màu đen */
-    font-weight: 600; /* In đậm */
-    font-size: 18px; /* Cỡ lớn hơn một chút */
+.publisher div p {
+  color: #000; /* Tên kênh: màu đen */
+  font-weight: 600; /* In đậm */
+  font-size: 18px; /* Cỡ lớn hơn một chút */
 }
 
-.publisher div span{
-    font-size: 13px; /* Dòng phụ: số người theo dõi */
-    color: #5a5a5a; /* Màu xám nhẹ */
+.publisher div span {
+  font-size: 13px; /* Dòng phụ: số người theo dõi */
+  color: #5a5a5a; /* Màu xám nhẹ */
 }
 
-.publisher button{
-    background: red; /* Nút subscribe màu đỏ */
-    color: #fff; /* Chữ màu trắng */
-    padding: 8px 30px; /* Đệm nút */
-    border: 0; /* Không viền */
-    outline: 0; /* Không viền khi focus */
-    border-radius: 4px; /* Bo nhẹ góc */
-    cursor: pointer; /* Khi rê chuột vào hiện tay */
-} 
-
-
+.publisher button {
+  background: red; /* Nút subscribe màu đỏ */
+  color: #fff; /* Chữ màu trắng */
+  padding: 8px 30px; /* Đệm nút */
+  border: 0; /* Không viền */
+  outline: 0; /* Không viền khi focus */
+  border-radius: 4px; /* Bo nhẹ góc */
+  cursor: pointer; /* Khi rê chuột vào hiện tay */
+}
 
 /* ======= Ô thêm bình luận ======= */
 
-
-
-
 /* ======= Một bình luận cũ (hiển thị bên dưới) ======= */
-.old-comment{
-    display:flex; /* Avatar + nội dung nằm ngang */
-    align-items: center;
-    margin: 20px 0;
+.old-comment {
+  display: flex; /* Avatar + nội dung nằm ngang */
+  align-items: center;
+  margin: 20px 0;
 }
 
-.old-comment img{
-    width: 35px;
-    border-radius: 50%; /* Avatar tròn */
-    margin-right: 15px;
+.old-comment img {
+  width: 35px;
+  border-radius: 50%; /* Avatar tròn */
+  margin-right: 15px;
 }
 
-.old-comment h3{
-    font-size: 14px; /* Tên người comment */
-    margin-bottom: 2px;
+.old-comment h3 {
+  font-size: 14px; /* Tên người comment */
+  margin-bottom: 2px;
 }
 
-.old-comment h3 span{
-    font-size: 12px; /* Thời gian đăng comment */
-    color: #5a5a5a;
-    font-weight: 500;
-    margin-left: 8px;
+.old-comment h3 span {
+  font-size: 12px; /* Thời gian đăng comment */
+  color: #5a5a5a;
+  font-weight: 500;
+  margin-left: 8px;
 }
 
 /* ======= Hành động tương tác dưới bình luận ======= */
-.old-comment .acomment-action{
-    display: flex; /* Like, dislike, reply nằm ngang */
-    align-items: center;
-    margin: 8px 0;
-    font-size: 14px;
+.old-comment .acomment-action {
+  display: flex; /* Like, dislike, reply nằm ngang */
+  align-items: center;
+  margin: 8px 0;
+  font-size: 14px;
 }
 
-.old-comment .acomment-action img{
-    border-radius: 0; /* Icon like/dislike không bo tròn */
-    width: 20px;
-    margin-right: 5px;
+.old-comment .acomment-action img {
+  border-radius: 0; /* Icon like/dislike không bo tròn */
+  width: 20px;
+  margin-right: 5px;
 }
 
-.old-comment .acomment-action span{
-    margin-right: 20px; /* Cách nhau giữa các con số */
-    color: #5a5a5a;
+.old-comment .acomment-action span {
+  margin-right: 20px; /* Cách nhau giữa các con số */
+  color: #5a5a5a;
 }
 
-.old-comment .acomment-action a{
-    color: #0000ff; /* Link 'All replies' màu xanh */
+.old-comment .acomment-action a {
+  color: #0000ff; /* Link 'All replies' màu xanh */
 }
 
 /* ============ Responsive: Khi màn hình nhỏ hơn hoặc bằng 900px ============ */
-@media(max-width:900px){
+@media (max-width: 900px) {
+  /* Phần phát video chiếm toàn bộ chiều ngang (không còn chia cột) */
+  .play-video {
+    flex-basis: 100%;
+  }
 
-    /* Phần phát video chiếm toàn bộ chiều ngang (không còn chia cột) */
-    .play-video{
-        flex-basis: 100%;
-    }
+  /* Phần sidebar (gợi ý video) cũng chiếm toàn bộ chiều ngang */
+  .right-sidebar {
+    flex-basis: 100%;
+  }
 
-    /* Phần sidebar (gợi ý video) cũng chiếm toàn bộ chiều ngang */
-    .right-sidebar{
-        flex-basis: 100%;
-    }
+  /* Container tổng được đẩy vào sát hơn (padding trái chỉ 5%) */
+  .play-container {
+    padding-left: 5%;
+  }
 
-    /* Container tổng được đẩy vào sát hơn (padding trái chỉ 5%) */
-    .play-container{
-        padding-left: 5%;
-    }
+  /* Mô tả video không còn thụt lề bên trái nữa (padding-left: 0) */
+  .vid-description {
+    padding-left: 0;
+  }
 
-    /* Mô tả video không còn thụt lề bên trái nữa (padding-left: 0) */
-    .vid-description{
-        padding-left: 0;
-    }
-
-    /* Các nút like/share/save trong play-video-info:
+  /* Các nút like/share/save trong play-video-info:
        - Không còn margin trái
        - Có margin phải để cách nhau
        - Thêm margin-top để không dính sát dòng trên */
-    .play-video .play-video-info a{
-        margin-left: 0;
-        margin-right: 15px;
-        margin-top: 15px;
-    }
+  .play-video .play-video-info a {
+    margin-left: 0;
+    margin-right: 15px;
+    margin-top: 15px;
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*                                                      Cái tôi tự làm                                                       */
 
-
 /* Container ngoài cùng – chia trái/phải */
 .publisherBar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 16px 0;
-    flex-wrap: wrap;
-  }
-
-*{
-    font-family: Roboto, Arial, sans-serif;
-
-}
-  /* Phần trái: Avatar + Tên */
-  .channelInfo {
-    display: flex;
-    align-items: center;
-  }
-  
-  .channelAvatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 12px;
-  }
-  
-  .channelName {
-    font-weight: 600;
-    font-size: 15px;
-    display: flex;
-    align-items: center;
-   
-  }
-  
-  
-  .subscriberCount {
-    font-size: 13px;
-    color: #606060;
-  }
-  
-  /* Phần phải: Đăng ký + Nút tương tác */
-  .action-buttons {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-  
-  /* Nút đăng ký */
-  .subscribeButton {
-    width: 82px;              /* ✅ Rộng đúng như bạn đo */
-    height: 35px;             /* ✅ Cao đúng */
-    font-size: 14px;          /* Cỡ chữ phù hợp (YouTube dùng khoảng 14px) */
-    background-color: black;  /* Nền nút (bạn có thể thay thành #000 hoặc #f2f2f2 tùy giao diện) */
-    color: white;             /* Màu chữ */
-    border-radius: 18px;      /* Bo tròn nhẹ để nút mềm mại */
-    border: none;
-    cursor: pointer;
-    margin-left: 20px;
-  }
-  
-  /* Các nút like, share, save... */
-  .action-buttons a {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    border-radius: 18px;
-    background:rgb(229, 229, 229);
-    color: rgb(15, 15, 15);
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;  
-    height: 35px;   
-    font-family: Roboto, Arial, sans-serif;
-    line-height: 36px;
-    transition: background-color 0.2s ease;
-
-  }
-  
-  .action-buttons .moreOptionButton{
-    justify-content: center;
-    width: 35px;
-  }
-
-  .action-buttons .likeButton{
-    justify-content: center;
-    width: 88px;
-  }
-
-  .action-buttons .dislikeButton{
-    justify-content: center;
-    width: 88px;
-  }
-
-  .action-buttons .shareButton{
-    justify-content: center;
-    width: 102px;
-  }
-
-  .action-buttons .saveButton{
-    justify-content: center;
-    width: 117px;
-  }
-  .action-buttons img{
-    width: 20px;
-    height: 20px;
-  }
-
-  /* ======= Mô tả video ======= */
-.vid-description{
-    padding: 14px;
-    margin-left: 5px;
-    margin-top: 15px; 
-    background:rgb(229, 229, 229);
-    color: rgb(15, 15, 15);
-    border-radius: 12px;      
-    border: none;
-    font-family: Roboto, Arial, sans-serif;
-    font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 16px 0;
+  flex-wrap: wrap;
 }
 
-.vid-description .view-info{
-    font-size: 14px; /* Cỡ chữ mô tả */
-    color: #5a5a5a; /* Màu xám nhẹ */
-    font-weight: 500;
-    margin-bottom: 10px;
-      
+* {
+  font-family: Roboto, Arial, sans-serif;
+}
+/* Phần trái: Avatar + Tên */
+.channelInfo {
+  display: flex;
+  align-items: center;
+}
+
+.channelAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.channelName {
+  font-weight: 600;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.subscriberCount {
+  font-size: 13px;
+  color: #606060;
+}
+
+/* Phần phải: Đăng ký + Nút tương tác */
+.action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Nút đăng ký */
+.subscribeButton {
+  width: 82px; /* ✅ Rộng đúng như bạn đo */
+  height: 35px; /* ✅ Cao đúng */
+  font-size: 14px; /* Cỡ chữ phù hợp (YouTube dùng khoảng 14px) */
+  background-color: black; /* Nền nút (bạn có thể thay thành #000 hoặc #f2f2f2 tùy giao diện) */
+  color: white; /* Màu chữ */
+  border-radius: 18px; /* Bo tròn nhẹ để nút mềm mại */
+  border: none;
+  cursor: pointer;
+  margin-left: 20px;
+}
+
+/* Các nút like, share, save... */
+.action-buttons a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 18px;
+  background: rgb(229, 229, 229);
+  color: rgb(15, 15, 15);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  height: 35px;
+  font-family: Roboto, Arial, sans-serif;
+  line-height: 36px;
+  transition: background-color 0.2s ease;
+}
+
+.action-buttons .moreOptionButton {
+  justify-content: center;
+  width: 35px;
+}
+
+.action-buttons .likeButton {
+  justify-content: center;
+  width: 88px;
+}
+
+.action-buttons .dislikeButton {
+  justify-content: center;
+  width: 88px;
+}
+
+.action-buttons .shareButton {
+  justify-content: center;
+  width: 102px;
+}
+
+.action-buttons .saveButton {
+  justify-content: center;
+  width: 117px;
+}
+.action-buttons img {
+  width: 20px;
+  height: 20px;
+}
+
+/* ======= Mô tả video ======= */
+.vid-description {
+  padding: 14px;
+  margin-left: 5px;
+  margin-top: 15px;
+  background: rgb(229, 229, 229);
+  color: rgb(15, 15, 15);
+  border-radius: 12px;
+  border: none;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 14px;
+}
+
+.vid-description .view-info {
+  font-size: 14px; /* Cỡ chữ mô tả */
+  color: #5a5a5a; /* Màu xám nhẹ */
+  font-weight: 500;
+  margin-bottom: 10px;
 }
 
 .description-text {
-    line-height: 1.5;
+  line-height: 1.5;
 }
-.comment-header{
-    display: flex;
-    /* justify-content: space-between; */
-    align-items: center;
-    margin-bottom: 20px;
-    margin-left: 5px;
-    margin-top: 20px;
-
+.comment-header {
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+  margin-bottom: 20px;
+  margin-left: 5px;
+  margin-top: 20px;
 }
-.sort-button{
-    background: none;
-    border: none;
-    color: #000;
-    font-weight: 500;
-    cursor: pointer;
-    padding-left: 30px;
-    justify-content: center;
-    align-items: center;
-    line-height: 36px;  
-    font-size: 14px;
-  
+.sort-button {
+  background: none;
+  border: none;
+  color: #000;
+  font-weight: 500;
+  cursor: pointer;
+  padding-left: 30px;
+  justify-content: center;
+  align-items: center;
+  line-height: 36px;
+  font-size: 14px;
 }
-.comment-header img{
-    width: 20px;   
-    height: 16px;
+.comment-header img {
+  width: 20px;
+  height: 16px;
 }
 
-.add-comment{
-   display: flex;
-   align-items: center;
+.add-comment {
+  display: flex;
+  align-items: center;
 }
-.add-comment img{
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 12px;
+.add-comment img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 12px;
 }
 
-.add-comment input{
-    border: 0; /* Không viền ô input */
-    outline: 0; /* Không viền khi nhấn */
-    border-bottom: 1px solid #ccc; /* Gạch dưới như YouTube */
-    width: 100%; /* Chiếm toàn bộ phần còn lại */
-    padding-top: 10px;
-    background: transparent; /* Nền trong suốt */
-    font-size: 14px;
+.add-comment input {
+  border: 0; /* Không viền ô input */
+  outline: 0; /* Không viền khi nhấn */
+  border-bottom: 1px solid #ccc; /* Gạch dưới như YouTube */
+  width: 100%; /* Chiếm toàn bộ phần còn lại */
+  padding-top: 10px;
+  background: transparent; /* Nền trong suốt */
+  font-size: 14px;
 }
 
 .comment {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 20px;
-    margin-top: 30px;
-  }
-  
-  .comment .avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 12px;
-  }
-  
-  .comment-body {
-    width: 100%;
-  }
-  
-  .comment-user {
-    font-weight: 600;
-    font-size: 14px;
-  }
-  
-  .comment-user span {
-    color: #606060;
-    font-weight: normal;
-    margin-left: 8px;
-    font-size: 13px;
-  }
-  
-  .comment-text {
-    margin: 6px 0;
-    font-size: 14px;
-  }
-  
-  .comment-actions a {
-    margin-right: 16px;
-    font-size: 14px;
-    color: #606060;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    
-  }
-  
-  
-  .comment-actions img {
-    width: 16px;
-    margin-right: 6px;
-  }
-  
-  .replies-toggle a {
-    font-size: 14px;
-    font-weight: 500;
-    color: #065fd4;
-    text-decoration: none;
-    margin-top: 6px;
-    display: inline-block;
-  }
-  
-  .reply {
-    display: flex;
-    margin-top: 16px;
-    margin-left: 0px;
-  }
-  
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  margin-top: 30px;
+}
+
+.comment .avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.comment-body {
+  width: 100%;
+}
+
+.comment-user {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.comment-user span {
+  color: #606060;
+  font-weight: normal;
+  margin-left: 8px;
+  font-size: 13px;
+}
+
+.comment-text {
+  margin: 6px 0;
+  font-size: 14px;
+}
+
+.comment-actions a {
+  margin-right: 16px;
+  font-size: 14px;
+  color: #606060;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.comment-actions img {
+  width: 16px;
+  margin-right: 6px;
+}
+
+.replies-toggle a {
+  font-size: 14px;
+  font-weight: 500;
+  color: #065fd4;
+  text-decoration: none;
+  margin-top: 6px;
+  display: inline-block;
+}
+
+.reply {
+  display: flex;
+  margin-top: 16px;
+  margin-left: 0px;
+}

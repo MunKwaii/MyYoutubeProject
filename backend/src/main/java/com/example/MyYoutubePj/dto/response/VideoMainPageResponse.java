@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class VideoMainPageResponse {
+    String videoId;
     String videoUrl;
     String thumbnailUrl;
     String durationFormatted;

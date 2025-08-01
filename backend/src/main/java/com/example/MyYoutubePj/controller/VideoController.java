@@ -2,12 +2,16 @@ package com.example.MyYoutubePj.controller;
 
 import com.example.MyYoutubePj.dto.request.VideoCreationRequest;
 import com.example.MyYoutubePj.dto.response.VideoMainPageResponse;
+import com.example.MyYoutubePj.dto.response.VideoPlayPageResponse;
 import com.example.MyYoutubePj.entity.Video;
 import com.example.MyYoutubePj.service.VideoService;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Map;
@@ -36,10 +40,15 @@ public class VideoController {
      * Lấy video theo ID
      * Endpoint: GET /api/videos/{id}
      */
+//    public Video getVideoById(@PathVariable String id) {
+//        return videoService.getVideoById(id)
+//                .orElseThrow(() -> new RuntimeException("Video with id " + id + " not found"));
+//    }
     @GetMapping("/{id}")
-    public Video getVideoById(@PathVariable String id) {
-        return videoService.getVideoById(id)
-                .orElseThrow(() -> new RuntimeException("Video with id " + id + " not found"));
+    public ResponseEntity<VideoPlayPageResponse> getVideoById(@PathVariable String id) {
+        return videoService.getVideoDetailById(id)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Video with id " + id + " not found"));
     }
     /**
      * Lấy random seed

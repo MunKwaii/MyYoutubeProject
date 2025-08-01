@@ -1,232 +1,425 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Play Video - Easy Tutorials Youtube Channel</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <nav class="flex-div">
-        <div class="nav-left flex-div">
-            <img src="images/menu.png" class="menu-icon">
-            <img src="images/logo.png" class="logo">
-
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Header start -->
+    <header class="header">
+      <!-- Menu + Logo -->
+      <div class="header_left">
+        <span class="material-symbols-outlined button_circle">menu</span>
+        <div class="logo_wrapper">
+          <a href="https://www.youtube.com">
+            <img src="youtubeLogo-Photoroom.png" alt="Youtube Logo" />
+          </a>
+          <div class="tool_tip">Youtube Home</div>
         </div>
-        <div class="nav-middle flex-div">
-            <div class="search-box flex-div">
-                <input type="text" placeholder="Search">
-                <img src="images/search.png">
+      </div>
+      <!-- Thanh tìm kiếm -->
+      <div class="header_search">
+        <form class="search_form">
+          <input type="text" id="search_input" placeholder="Search" />
+          <span class="material-symbols-outlined keyboard-icon">keyboard</span>
+          <div class="button_wrapper">
+            <button type="submit">
+              <span class="material-symbols-outlined">search</span>
+            </button>
+            <div class="tool_tip">Search</div>
+          </div>
+        </form>
+        <button class="voice_button button_circle">
+          <span class="material-symbols-outlined">mic</span>
+          <div class="tool_tip">Voice</div>
+        </button>
+      </div>
+      <!-- Nhóm Icons -->
+      <div class="header_icons">
+        <!-- Nút tạo video -->
+        <button class="create_button">
+          <span class="material-symbols-outlined">add</span>
+          <span>Create</span>
+        </button>
+        <!-- Nút thông báo -->
+        <div class="notification button_circle">
+          <span class="material-symbols-outlined"> notifications </span>
+          <div class="tool_tip">Nofitication</div>
+        </div>
+        <!-- Nút avatar -->
+        <div class="avatar button_circle">
+          <span class="material-symbols-outlined"> account_circle </span>
+          <div class="tool_tip">Account</div>
+        </div>
+      </div>
+    </header>
+    <!-- Header end -->
+
+    <!-- Body start -->
+    <main class="body">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar_components">
+          <span class="material-symbols-outlined"> home </span>
+          <span>Home</span>
+        </div>
+        <div class="sidebar_components">
+          <img
+            width="24"
+            height="24"
+            src="https://img.icons8.com/material-outlined/48/youtube-shorts.png"
+            alt="youtube-shorts"
+          />
+          <span>Shorts</span>
+        </div>
+        <div class="sidebar_components">
+          <span class="material-symbols-outlined"> subscriptions </span>
+          <span>Subcriptions</span>
+        </div>
+        <div class="sidebar_components">
+          <span class="material-symbols-outlined"> account_circle </span>
+          <span>You</span>
+        </div>
+      </aside>
+
+      <!-- Sidebar Expanded -->
+      <aside class="sidebar_expanded">
+        <!-- Header -->
+        <div class="side_ex_top">
+          <span class="material-symbols-outlined button_circle">menu</span>
+          <a href="https://www.youtube.com">
+            <img
+              src="youtubeLogo-Photoroom.png"
+              alt="Youtube Logo"
+              height="64px"
+            />
+          </a>
+        </div>
+        <!-- Section 1 -->
+        <div class="side_ex_sections">
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined"> home </span>
+            <span>Home</span>
+          </div>
+          <div class="side_ex_components">
+            <img
+              width="24"
+              height="24"
+              src="https://img.icons8.com/material-outlined/48/youtube-shorts.png"
+              alt="youtube-shorts"
+            />
+            <span>Shorts</span>
+          </div>
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined"> subscriptions </span>
+            <span>Subcriptions</span>
+          </div>
+        </div>
+        <hr />
+        <!-- Section 2 -->
+        <div class="side_ex_sections">
+          <div class="You_heading">You ></div>
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined"> history </span>
+            <span>History</span>
+          </div>
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined"> playlist_play </span>
+            <span>Playlists</span>
+          </div>
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined"> schedule </span>
+            <span>Watch later</span>
+          </div>
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined"> thumb_up </span>
+            <span>Liked videos</span>
+          </div>
+        </div>
+        <hr />
+        <!-- Section 3 -->
+        <div class="side_ex_sections">
+          <div class="Normal_heading">Subscription</div>
+          <div class="subscription_list" id="subscription_list">
+            <!-- Mẫu 1 kênh (sẽ lặp lại nhiều lần bằng JS/backend) -->
+            <div class="side_ex_components">
+              <img
+                class="Avatar"
+                src="https://yt3.googleusercontent.com/ytc/AIdro_mT_RAcAKTEXdvZycCVE5eVMUMAdeOjoOpKsYrNWK_aEw=s160-c-k-c0x00ffffff-no-rj"
+                alt="Avatar"
+              />
+              <span>CodingNepal</span>
             </div>
-            <img src="images/voice-search.png" class="mic-icon">
+            <!-- ... -->
+          </div>
+          <!-- Chuan bi de call backend cho avatar va ten channel-->
+          <div class="side_ex_components" id="show_more_btn">
+            <span class="material-symbols-outlined"> keyboard_arrow_down </span>
+            <span>Show more</span>
+          </div>
         </div>
-        <div class="nav-right flex-div">
-            <img src="images/upload.png">
-            <img src="images/more.png">
-            <img src="images/notification.png">
-            <img src="images/Jack.png" class="user-icon">
-
+        <!-- Section 4 -->
+        <div class="side_ex_sections">
+          <div class="Normal_heading">Explore</div>
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined">
+              local_fire_department
+            </span>
+            <span>Trending</span>
+          </div>
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined"> music_cast </span>
+            <span>Music</span>
+          </div>
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined"> sports_esports </span>
+            <span>Games</span>
+          </div>
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined"> breaking_news </span>
+            <span>News</span>
+          </div>
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined"> sports_and_outdoors </span>
+            <span>Sports</span>
+          </div>
         </div>
+        <hr />
+        <!-- Section 5 -->
+        <div class="side_ex_sections">
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined"> settings </span>
+            <span>Settings</span>
+          </div>
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined"> flag </span>
+            <span>Reports</span>
+          </div>
+          <div class="side_ex_components">
+            <span class="material-symbols-outlined"> help </span>
+            <span>Help</span>
+          </div>
+        </div>
+        <br />
+        <br />
+      </aside>
+      <!-- Overlay background -->
+      <div id="overlay" class="overlay"></div>
+      <!-- Video Container -->
+      <div class="video_container">
+        <div class="container play-container">
+          <div class="row">
+            <div class="play-video">
+              <iframe
+                id="youtubePlayer"
+                frameborder="0"
+                allowfullscreen
+              ></iframe>
+              <h2 id="videoTitle">
+                Best Youtube Channel To Learn Web Developement
+              </h2>
 
-    </nav>
-
-<div class="container play-container">
-    <div class="row">
-        <div class="play-video">
-            <iframe id="youtubePlayer" frameborder="0" allowfullscreen></iframe>
-            <h2 id="videoTitle">Best Youtube Channel To Learn Web Developement</h2>
-
-
-            <div class="publisherBar">
-               <div class="channelInfo">
-                    <img class="channelAvatar" src="images/Jack.png">
-                    <div>
-                        <p class="channelName">Naruto</p>
-                        <span class="subscriberCount">17,3 Tr người đăng ký</span>
-                    </div>
-                    <button class="subscribeButton">Subcribe</button>
-               </div>
+              <div class="publisherBar">
+                <div class="channelInfo">
+                  <img class="channelAvatar" src="images/Jack.png" />
+                  <div>
+                    <p class="channelName">Naruto</p>
+                    <span class="subscriberCount">17,3 Tr người đăng ký</span>
+                  </div>
+                  <button class="subscribeButton">Subcribe</button>
+                </div>
                 <!-- Bên phải: nút đăng ký + tương tác -->
                 <div class="action-buttons">
-                    <a class="likeButton" href="#"><img src="images/like.png"> 139 N</a>
-                    <a class="dislikeButton" href="#"><img src="images/dislike.png">7 N</a>
-                    <a class="shareButton" href="#"><img src="images/share.png"> Chia sẻ</a>
-                    <a class="saveButton" href="#"><img src="images/save.png"> Tải xuống</a>
-                    <a class="moreOptionButton" href="#">⋯</a>
+                  <a class="likeButton" href="#"
+                    ><img src="images/like.png" /> 139 N</a
+                  >
+                  <a class="dislikeButton" href="#"
+                    ><img src="images/dislike.png" />7 N</a
+                  >
+                  <a class="shareButton" href="#"
+                    ><img src="images/share.png" /> Chia sẻ</a
+                  >
+                  <a class="saveButton" href="#"
+                    ><img src="images/save.png" /> Tải xuống</a
+                  >
+                  <a class="moreOptionButton" href="#">⋯</a>
                 </div>
-            </div>
-            <div class="vid-description">
-                <p id="view-info"><strong class="videoViews">431 N views&nbsp;&nbsp;<span >6 years ago</span></strong></p>
-                <p class="description-text">
-                    More Information/Social Media links in the description below ⤵<br><br>
-                    ...thêm
+              </div>
+              <div class="vid-description">
+                <p id="view-info">
+                  <strong class="videoViews"
+                    >431 N views&nbsp;&nbsp;<span>6 years ago</span></strong
+                  >
                 </p>
-                <!-- <div class="add-comment">
-                    <img src="images/Jack.png">
-                    <input type="text" placeholder="Write comments">
-                </div>
-                <div class="old-comment">
-                    <img src="images/Jack.png">
-                    <div>
-                        <h3>Jack Nicholson <span>2 days ago</span></h3>
-                        <p>To all the beginners. This video is great for you to practice however most of the things like the videos in the homepage and their details and when u play a video most of the details actually come from the database. So don't get confused. For every video there isn't many HTML pages. They trigger events and data comes from databases.This comment is to help beginners 👍</p>
-                        <div class="acomment-action">
-                            <img src="images/like.png">
-                            <span>244</span>
-                            <img src="images/dislike.png">
-                            <span>3</span>
-                            <span>REPLY</span>
-                            <a href="">All replies</a>
-                        </div>
-                    </div>
-                </div> -->
+                <p class="description-text">
+                  More Information/Social Media links in the description below
+                  ⤵<br /><br />
+                  ...thêm
+                </p>
+              </div>
 
-            </div>
-            <div class="comment-header">
+              <div class="comment-header">
                 <h3>1.234 Comments</h3>
-                <button class="sort-button"><img src="images/menu.png"> Order By</button>
-            </div>
-            <div class="add-comment">
-                <img src="images/Jack.png" class="avatar">
-                <input type="text" placeholder="Wirte comments...">
-            </div>
-            <!-- Một bình luận -->
-            <div class="comment">
-            <img src="images/Jack.png" class="avatar">
-            <div class="comment-body">
-                <p class="comment-user">@zen-kun <span>7 năm trước</span></p>
-                <p class="comment-text">this and amazing’s vids seem to be linked together ahh ❤️</p>
-                <div class="comment-actions">
-                <a href="#"><img src="images/like.png"> 1,3 N</a>
-                <a href="#"><img src="images/dislike.png"></a>
-                <a id="reply" href="#">Phản hồi</a>
-                </div>
+                <button class="sort-button">
+                  <img src="images/menu.png" /> Order By
+                </button>
+              </div>
+              <div class="add-comment">
+                <img src="images/Jack.png" class="avatar" />
+                <input type="text" placeholder="Wirte comments..." />
+              </div>
 
-                <!-- Phản hồi con -->
-                <div class="replies-toggle">
-                <a href="#">25 phản hồi</a>
-                </div>
-
-                <div class="reply">
-                <img src="images/Jack.png" class="avatar">
+              <!-- Một bình luận -->
+              <div class="comment">
+                <img src="images/Jack.png" class="avatar" />
                 <div class="comment-body">
-                    <p class="comment-user">@tyugokutorakku <span>11 tháng trước (đã chỉnh sửa)</span></p>
-                    <p class="comment-text">
-                    最後のところが好きすぎる。<br>
-                    何年経っても聞きに来ちゃう<br>
-                    <em>Dịch sang Tiếng Việt</em>
-                    </p>
-                    <div class="comment-actions">
-                    <a href="#"><img src="images/like.png"> 80</a>
-                    <a href="#"><img src="images/dislike.png"></a>
-                    <a href="#">Phản hồi</a>
+                  <p class="comment-user">@zen-kun <span>7 năm trước</span></p>
+                  <p class="comment-text">
+                    this and amazing’s vids seem to be linked together ahh ❤️
+                  </p>
+                  <div class="comment-actions">
+                    <a href="#"><img src="images/like.png" /> 1,3 N</a>
+                    <a href="#"><img src="images/dislike.png" /></a>
+                    <a id="reply" href="#">Phản hồi</a>
+                  </div>
+
+                  <!-- Phản hồi con -->
+                  <div class="replies-toggle">
+                    <a href="#">25 phản hồi</a>
+                  </div>
+
+                  <div class="reply">
+                    <img src="images/Jack.png" class="avatar" />
+                    <div class="comment-body">
+                      <p class="comment-user">
+                        @tyugokutorakku
+                        <span>11 tháng trước (đã chỉnh sửa)</span>
+                      </p>
+                      <p class="comment-text">
+                        最後のところが好きすぎる。<br />
+                        何年経っても聞きに来ちゃう<br />
+                        <em>Dịch sang Tiếng Việt</em>
+                      </p>
+                      <div class="comment-actions">
+                        <a href="#"><img src="images/like.png" /> 80</a>
+                        <a href="#"><img src="images/dislike.png" /></a>
+                        <a href="#">Phản hồi</a>
+                      </div>
                     </div>
+                  </div>
                 </div>
+              </div>
+            </div>
+
+            <div class="right-sidebar">
+              <div class="side-video-list">
+                <a href="" class="small-thumbnail"
+                  ><img src="images/thumbnail1.png"
+                /></a>
+                <div class="vid-info">
+                  <a href=""
+                    >Best channel that help you to be a web developer</a
+                  >
+                  <p>Easy Tutorials</p>
+                  <p>15k Views</p>
                 </div>
+              </div>
+              <div class="side-video-list">
+                <a href="" class="small-thumbnail"
+                  ><img src="images/thumbnail2.png"
+                /></a>
+                <div class="vid-info">
+                  <a href=""
+                    >Best channel that help you to be a web developer</a
+                  >
+                  <p>Easy Tutorials</p>
+                  <p>15k Views</p>
+                </div>
+              </div>
+              <div class="side-video-list">
+                <a href="" class="small-thumbnail"
+                  ><img src="images/thumbnail3.png"
+                /></a>
+                <div class="vid-info">
+                  <a href=""
+                    >Best channel that help you to be a web developer</a
+                  >
+                  <p>Easy Tutorials</p>
+                  <p>15k Views</p>
+                </div>
+              </div>
+              <div class="side-video-list">
+                <a href="" class="small-thumbnail"
+                  ><img src="images/thumbnail4.png"
+                /></a>
+                <div class="vid-info">
+                  <a href=""
+                    >Best channel that help you to be a web developer</a
+                  >
+                  <p>Easy Tutorials</p>
+                  <p>15k Views</p>
+                </div>
+              </div>
+              <div class="side-video-list">
+                <a href="" class="small-thumbnail"
+                  ><img src="images/thumbnail5.png"
+                /></a>
+                <div class="vid-info">
+                  <a href=""
+                    >Best channel that help you to be a web developer</a
+                  >
+                  <p>Easy Tutorials</p>
+                  <p>15k Views</p>
+                </div>
+              </div>
+              <div class="side-video-list">
+                <a href="" class="small-thumbnail"
+                  ><img src="images/thumbnail6.png"
+                /></a>
+                <div class="vid-info">
+                  <a href=""
+                    >Best channel that help you to be a web developer</a
+                  >
+                  <p>Easy Tutorials</p>
+                  <p>15k Views</p>
+                </div>
+              </div>
+              <div class="side-video-list">
+                <a href="" class="small-thumbnail"
+                  ><img src="images/thumbnail7.png"
+                /></a>
+                <div class="vid-info">
+                  <a href=""
+                    >Best channel that help you to be a web developer</a
+                  >
+                  <p>Easy Tutorials</p>
+                  <p>15k Views</p>
+                </div>
+              </div>
+              <div class="side-video-list">
+                <a href="" class="small-thumbnail"
+                  ><img src="images/thumbnail8.png"
+                /></a>
+                <div class="vid-info">
+                  <a href=""
+                    >Best channel that help you to be a web developer</a
+                  >
+                  <p>Easy Tutorials</p>
+                  <p>15k Views</p>
+                </div>
+              </div>
             </div>
-            </div>
-
-
-
-
-
-
-
-
-
-
-
-            
-
+          </div>
         </div>
-        <div class="right-sidebar">
-            <div class="side-video-list">
-                <a href="" class="small-thumbnail"><img src="images/thumbnail1.png"></a>
-                <div class="vid-info">
-                    <a href="">Best channel that help you to be a web developer</a>
-                    <p>Easy Tutorials</p>
-                    <p>15k Views</p>
-                </div>
-            </div>
-            <div class="side-video-list">
-                <a href="" class="small-thumbnail"><img src="images/thumbnail2.png"></a>
-                <div class="vid-info">
-                    <a href="">Best channel that help you to be a web developer</a>
-                    <p>Easy Tutorials</p>
-                    <p>15k Views</p>
-                </div>
-            </div>
-            <div class="side-video-list">
-                <a href="" class="small-thumbnail"><img src="images/thumbnail3.png"></a>
-                <div class="vid-info">
-                    <a href="">Best channel that help you to be a web developer</a>
-                    <p>Easy Tutorials</p>
-                    <p>15k Views</p>
-                </div>
-            </div>
-            <div class="side-video-list">
-                <a href="" class="small-thumbnail"><img src="images/thumbnail4.png"></a>
-                <div class="vid-info">
-                    <a href="">Best channel that help you to be a web developer</a>
-                    <p>Easy Tutorials</p>
-                    <p>15k Views</p>
-                </div>
-            </div>
-            <div class="side-video-list">
-                <a href="" class="small-thumbnail"><img src="images/thumbnail5.png"></a>
-                <div class="vid-info">
-                    <a href="">Best channel that help you to be a web developer</a>
-                    <p>Easy Tutorials</p>
-                    <p>15k Views</p>
-                </div>
-            </div>
-            <div class="side-video-list">
-                <a href="" class="small-thumbnail"><img src="images/thumbnail6.png"></a>
-                <div class="vid-info">
-                    <a href="">Best channel that help you to be a web developer</a>
-                    <p>Easy Tutorials</p>
-                    <p>15k Views</p>
-                </div>
-            </div>
-            <div class="side-video-list">
-                <a href="" class="small-thumbnail"><img src="images/thumbnail7.png"></a>
-                <div class="vid-info">
-                    <a href="">Best channel that help you to be a web developer</a>
-                    <p>Easy Tutorials</p>
-                    <p>15k Views</p>
-                </div>
-            </div>
-            <div class="side-video-list">
-                <a href="" class="small-thumbnail"><img src="images/thumbnail8.png"></a>
-                <div class="vid-info">
-                    <a href="">Best channel that help you to be a web developer</a>
-                    <p>Easy Tutorials</p>
-                    <p>15k Views</p>
-                </div>
-            </div>
-        </div>
+      </div>
+    </main>
 
-            
-
-    </div>
-
-</div>
-
-
-<script src="script.js"></script> 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>

@@ -13,7 +13,7 @@ spring:
     show-sql: true
 youtube:
   api:
-    key: ""
+    key: "AIzaSyDnLiNrHRTo7Pi368qiJeeWcQXTh8kl7uc"
 logging:
   level:
     root: INFO

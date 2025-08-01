@@ -28,7 +28,7 @@ public class MyYoutubePjApplication {
 		// Khởi động Spring
 		ConfigurableApplicationContext context = SpringApplication.run(MyYoutubePjApplication.class, args);
 
-		// Set keyword cho scheduler
+//		 Set keyword cho scheduler
 		YoutubeMetadataScheduler scheduler = context.getBean(YoutubeMetadataScheduler.class);
 		scheduler.setKeyword(initialKeyword);
 		scheduler.startScheduler();
